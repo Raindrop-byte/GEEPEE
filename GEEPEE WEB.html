@@ -1,0 +1,1720 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GEEPEE - Premium Streetwear & Culture</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Integration -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap");
+      @import url("https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&display=swap");
+      @import url("https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,900;1,600&display=swap");
+
+      * {
+        font-family: "Inter", sans-serif;
+        box-sizing: border-box;
+      }
+
+      .receipt-font {
+        font-family: "Courier Prime", monospace;
+      }
+
+      .magazine-title {
+        font-family: "Playfair Display", serif;
+      }
+
+      .transparent-bg-img {
+        mix-blend-mode: screen;
+      }
+
+      .nav-link {
+        position: relative;
+        transition: all 0.3s ease;
+      }
+
+      .nav-link::after {
+        content: "";
+        position: absolute;
+        width: 0;
+        height: 2px;
+        bottom: -4px;
+        left: 0;
+        background-color: #ffffff;
+        transition: width 0.3s ease;
+      }
+
+      .nav-link:hover::after {
+        width: 100%;
+      }
+
+      /* Mobile Dropdown Styling */
+      .mobile-dropdown {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease-in-out;
+      }
+
+      .mobile-dropdown.open {
+        max-height: 350px;
+      }
+
+      /* Cart Drawer Styling */
+      .cart-drawer {
+        transform: translateX(100%);
+        transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+
+      .cart-drawer.open {
+        transform: translateX(0);
+      }
+
+      /* 3D Stage Perspective */
+      .perspective-stage {
+        perspective: 1000px;
+        transform-style: preserve-3d;
+      }
+
+      .hero a { /* Assuming the button is an <a> tag */
+    position: absolute;
+    bottom: 30px;
+      }
+
+      /* Infinite Ticker Animation for New Arrivals */
+      @keyframes tickerScroll {
+        0% { transform: translateX(0); }
+        100% { transform: translateX(-50%); }
+      }
+
+      .ticker-track {
+        display: flex;
+        width: max-content;
+        animation: tickerScroll 35s linear infinite;
+      }
+
+      .ticker-track:hover {
+        animation-play-state: paused;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        overflow-x: hidden;
+      }
+      
+    </style>
+  </head>
+  <body class="bg-black text-white">
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 bg-black/95 backdrop-blur-md border-b border-gray-800">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3 sm:py-4">
+        <div class="flex items-center justify-between gap-4">
+          <div class="flex items-center space-x-3">
+            <a href="#" class="flex items-center">
+              <img src="images/logo%20geepee.png" alt="GEEPEE Logo" class="h-10 sm:h-14 w-auto object-contain" />
+            </a>
+          </div>
+
+          <!-- Top Catalog Search Bar -->
+          <div class="flex-1 max-w-md hidden md:block relative">
+            <div class="relative flex items-center">
+              <svg class="w-4 h-4 text-zinc-400 absolute left-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+              </svg>
+              <input type="text" id="top-search-input" oninput="handleGlobalSearch(this.value)" placeholder="Search any product or brand inventory..." class="w-full bg-zinc-900 border border-zinc-700 rounded-full pl-10 pr-4 py-2 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-white transition-all" />
+            </div>
+            <!-- Search Results Dropdown -->
+            <div id="search-results-dropdown" class="absolute top-full left-0 right-0 mt-2 bg-zinc-950 border border-zinc-800 rounded-xl shadow-2xl max-h-60 overflow-y-auto hidden z-30 divide-y divide-zinc-900"></div>
+          </div>
+
+          <!-- Desktop Navigation -->
+          <div class="hidden lg:flex space-x-6 xl:space-x-8 items-center">
+            <a href="#arrivals-title" class="nav-link font-medium hover:text-gray-300 text-sm xl:text-base">NEW ARRIVALS</a>
+            <a href="#magazine-section-1" class="nav-link font-medium hover:text-gray-300 text-sm xl:text-base">CULTURE</a>
+            <a href="#reviews-section" class="nav-link font-medium hover:text-gray-300 text-sm xl:text-base">REVIEWS</a>
+            <a href="#contact-section" class="nav-link font-medium hover:text-gray-300 text-sm xl:text-base">CONTACT US</a>
+            <a href="#about-section" class="nav-link font-medium hover:text-gray-300 text-sm xl:text-base">ABOUT US</a>
+          </div>
+
+          <div class="flex items-center space-x-2 sm:space-x-4">
+            <!-- Profile / Account Icon -->
+            <button id="profile-btn" class="relative hover:text-gray-300 transition-colors p-2" aria-label="Profile / Account">
+              <i class="fa-solid fa-user text-lg"></i>
+            </button>
+
+            <!-- Cart Icon -->
+            <button id="cart-btn" class="relative hover:text-gray-300 transition-colors p-2" aria-label="Cart">
+              <i class="fa-solid fa-bag-shopping text-lg"></i>
+              <span id="cart-count" class="absolute top-0 right-0 bg-white text-black text-[10px] rounded-full w-4 h-4 flex items-center justify-center font-bold">0</span>
+            </button>
+
+            <button id="mobile-menu-btn" class="lg:hidden hover:text-gray-300 transition-colors p-2" aria-label="Open menu">
+              <i class="fa-solid fa-bars text-lg"></i>
+            </button>
+          </div>
+        </div>
+        <!-- Mobile Search Bar -->
+        <div class="mt-3 md:hidden relative">
+          <input type="text" id="mobile-search-input" oninput="handleGlobalSearch(this.value)" placeholder="Search products or inventory..." class="w-full bg-zinc-900 border border-zinc-700 rounded-full px-4 py-2 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-white" />
+          <div id="mobile-search-results-dropdown" class="absolute top-full left-0 right-0 mt-2 bg-zinc-950 border border-zinc-800 rounded-xl shadow-2xl max-h-60 overflow-y-auto hidden z-50 divide-y divide-zinc-900"></div>
+        </div>
+      </div>
+
+      <!-- Mobile Dropdown Menu -->
+      <div id="mobile-dropdown" class="mobile-dropdown lg:hidden bg-black border-b border-gray-800 px-6">
+        <div class="flex flex-col space-y-4 py-4">
+          <a href="#new-arrivals-section" class="mobile-link text-sm font-semibold tracking-wider hover:text-gray-400">NEW ARRIVALS</a>
+          <a href="#magazine-section-1" class="mobile-link text-sm font-semibold tracking-wider hover:text-gray-400">CULTURE</a>
+          <a href="#reviews-section" class="mobile-link text-sm font-semibold tracking-wider hover:text-gray-400">REVIEWS</a>
+          <a href="#contact-section" class="mobile-link text-sm font-semibold tracking-wider hover:text-gray-400">CONTACT US</a>
+          <a href="#about-section" class="mobile-link text-sm font-semibold tracking-wider hover:text-gray-400">ABOUT US</a>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Floating Checkout Banner Bar -->
+    <div id="floating-checkout-bar" class="fixed bottom-6 right-6 z-40 hidden transition-all duration-300 transform translate-y-0">
+      <button onclick="openCartDrawer()" class="bg-white text-black font-extrabold px-6 py-3.5 rounded-full shadow-2xl flex items-center space-x-3 hover:bg-zinc-200 transition-all border border-zinc-300 group">
+        <i class="fa-solid fa-cart-shopping text-black group-hover:scale-110 transition-transform"></i>
+        <span class="text-xs uppercase tracking-wider font-black">VIEW BAG & CHECKOUT (<span id="floating-badge-count">0</span>)</span>
+      </button>
+    </div>
+
+    <!-- Profile Modal with Sign In / Create Account Tabs -->
+    <div id="profile-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+      <div class="bg-zinc-950 border border-zinc-800 rounded-xl max-w-md w-full overflow-hidden relative shadow-2xl p-6 text-white">
+        <button onclick="closeProfileModal()" class="absolute top-4 right-4 text-zinc-400 hover:text-white text-xl font-bold">&times;</button>
+        
+        <!-- Logged-in State Container -->
+        <div id="profile-logged-in-view" class="hidden text-center py-6 space-y-4">
+          <div class="w-16 h-16 bg-zinc-900 rounded-full flex items-center justify-center mx-auto border border-zinc-700">
+            <i class="fa-solid fa-user-check text-2xl text-emerald-400"></i>
+          </div>
+          <div>
+            <h3 id="profile-username-display" class="text-xl font-black">Welcome Back!</h3>
+            <p id="profile-email-display" class="text-xs text-zinc-400 mt-1"></p>
+          </div>
+          <button onclick="handleLogout()" class="w-full bg-zinc-900 border border-zinc-700 text-red-400 py-3 font-bold hover:bg-zinc-800 transition-colors text-xs uppercase tracking-wider rounded">
+            SIGN OUT
+          </button>
+        </div>
+
+        <!-- Auth Tabs Container -->
+        <div id="profile-auth-view">
+          <!-- Tab Navigation -->
+          <div class="flex border-b border-zinc-800 mb-6">
+            <button id="tab-signin-btn" onclick="switchAuthTab('signin')" class="flex-1 pb-3 text-sm font-black tracking-wider text-white border-b-2 border-white transition-all">SIGN IN</button>
+            <button id="tab-register-btn" onclick="switchAuthTab('register')" class="flex-1 pb-3 text-sm font-black tracking-wider text-zinc-500 border-b-2 border-transparent transition-all">CREATE ACCOUNT</button>
+          </div>
+
+          <!-- Sign In Form -->
+          <form id="form-signin" onsubmit="handleAuthSubmit(event, 'signin')" class="space-y-4">
+            <p class="text-xs text-zinc-400 mb-2">Welcome back! Please enter your details to access your account & orders.</p>
+            <div>
+              <label class="block text-xs text-zinc-400 mb-1 uppercase tracking-wider">Email Address</label>
+              <input type="email" id="signin-email" required placeholder="name@example.com" class="w-full px-4 py-2.5 bg-zinc-900 border border-zinc-700 text-white rounded text-sm focus:outline-none focus:border-white" />
+            </div>
+            <div>
+              <label class="block text-xs text-zinc-400 mb-1 uppercase tracking-wider">Password</label>
+              <input type="password" required placeholder="••••••••" class="w-full px-4 py-2.5 bg-zinc-900 border border-zinc-700 text-white rounded text-sm focus:outline-none focus:border-white" />
+            </div>
+            <button type="submit" class="w-full bg-white text-black py-3 font-bold hover:bg-zinc-200 transition-colors text-xs uppercase tracking-wider rounded">
+              SIGN IN
+            </button>
+          </form>
+
+          <!-- Create Account Form -->
+          <form id="form-register" onsubmit="handleAuthSubmit(event, 'register')" class="space-y-4 hidden">
+            <p class="text-xs text-zinc-400 mb-2">Join GEEPEE to unlock exclusive offers and enter giveaway draws.</p>
+            <div>
+              <label class="block text-xs text-zinc-400 mb-1 uppercase tracking-wider">Username</label>
+              <input type="text" id="register-name" required placeholder="John Doe" class="w-full px-4 py-2.5 bg-zinc-900 border border-zinc-700 text-white rounded text-sm focus:outline-none focus:border-white" />
+            </div>
+            <div>
+              <label class="block text-xs text-zinc-400 mb-1 uppercase tracking-wider">Email Address</label>
+              <input type="email" id="register-email" required placeholder="name@example.com" class="w-full px-4 py-2.5 bg-zinc-900 border border-zinc-700 text-white rounded text-sm focus:outline-none focus:border-white" />
+            </div>
+            <div>
+              <label class="block text-xs text-zinc-400 mb-1 uppercase tracking-wider">Password</label>
+              <input type="password" required placeholder="••••••••" class="w-full px-4 py-2.5 bg-zinc-900 border border-zinc-700 text-white rounded text-sm focus:outline-none focus:border-white" />
+            </div>
+            <button type="submit" class="w-full bg-white text-black py-3 font-bold hover:bg-zinc-200 transition-colors text-xs uppercase tracking-wider rounded">
+              CREATE ACCOUNT
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Automatic Popup Newsletter Modal -->
+    <div id="popup-newsletter" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+      <div class="bg-zinc-950 border border-zinc-800 rounded-xl max-w-lg w-full overflow-hidden relative shadow-2xl p-8 text-center text-white">
+        <button onclick="closePopupNewsletter()" class="absolute top-4 right-4 text-zinc-400 hover:text-white text-xl font-bold">&times;</button>
+        <img src="images/logo%20geepee.png" alt="GEEPEE" class="h-8 w-auto object-contain mx-auto mb-4" />
+        <h3 class="text-2xl font-black mb-3">JOIN THE CREW</h3>
+        <p class="text-sm text-zinc-300 mb-6 leading-relaxed">
+          Sign up to get exclusive offers tailored just for you and also earn a chance to be the first to get FREE giveaways.
+        </p>
+        <div class="space-y-3">
+          <input type="email" id="popup-email-input" placeholder="Enter your email address" class="w-full px-4 py-3 bg-zinc-900 border border-zinc-700 text-white placeholder-zinc-500 rounded text-sm focus:outline-none focus:border-white" />
+          <button onclick="submitPopupNewsletter()" class="w-full bg-white text-black py-3.5 font-bold hover:bg-zinc-200 transition-colors text-xs uppercase tracking-wider rounded">
+            CLAIM EXCLUSIVE ACCESS
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Receipt-Style Cart Drawer -->
+    <div id="cart-overlay" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 hidden transition-opacity"></div>
+    <div id="cart-drawer" class="cart-drawer fixed top-0 right-0 w-full sm:w-[420px] h-full bg-zinc-950 border-l border-zinc-800 z-50 flex flex-col shadow-2xl text-white">
+      <div class="p-5 border-b border-zinc-800 flex items-center justify-between bg-black">
+        <div class="flex items-center space-x-2">
+          <span class="text-lg font-black tracking-wider">YOUR BAG</span>
+          <span id="drawer-item-count" class="text-xs bg-zinc-800 text-zinc-300 px-2 py-0.5 rounded-full font-mono">0 items</span>
+        </div>
+        <button id="close-cart-btn" class="p-2 text-zinc-400 hover:text-white transition-colors" aria-label="Close cart">
+          <i class="fa-solid fa-xmark text-lg"></i>
+        </button>
+      </div>
+
+      <div id="cart-items-container" class="flex-1 overflow-y-auto p-5 space-y-4 divide-y divide-zinc-900"></div>
+
+      <div class="p-5 border-t border-zinc-800 bg-black">
+        <div class="bg-zinc-900/60 border border-zinc-800 p-4 rounded-md mb-4 receipt-font text-xs text-zinc-300 space-y-2 shadow-inner">
+          <div class="flex flex-col items-center justify-center mb-2 pb-2 border-b border-dashed border-zinc-700">
+            <img src="images/logo%20geepee.png" alt="GEEPEE" class="h-6 w-auto object-contain mb-1" />
+            <span class="text-[10px] tracking-widest text-zinc-400 font-bold uppercase">OFFICIAL RECEIPT</span>
+          </div>
+          <div class="flex justify-between"><span>SUBTOTAL</span><span id="receipt-subtotal">Ksh 0</span></div>
+          <div class="flex justify-between items-center">
+            <span>DELIVERY ZONE</span>
+            <select id="shipping-select" onchange="renderCartDrawer()" class="bg-zinc-800 text-zinc-200 text-[11px] rounded px-1 py-0.5 border border-zinc-700 receipt-font">
+              <option value="0">Store Pickup (Free / Ksh 0)</option>
+              <option value="200">Local CBD / Near (Ksh 200)</option>
+              <option value="350">Suburbs / Environs (Ksh 350)</option>
+              <option value="600">Out of Town / Upcountry (Ksh 600)</option>
+            </select>
+          </div>
+          <div class="flex justify-between"><span>SHIPPING FEE</span><span id="receipt-shipping">Ksh 0</span></div>
+          <div class="flex justify-between"><span>TAX (VAT)</span><span>Ksh 0.00</span></div>
+          <div class="flex justify-between font-bold text-white pt-2 border-t border-dashed border-zinc-700 text-sm">
+            <span>TOTAL DUE</span><span id="receipt-total">Ksh 0</span>
+          </div>
+        </div>
+        <button onclick="checkout()" class="w-full bg-white text-black py-3.5 font-bold hover:bg-zinc-200 transition-colors text-sm uppercase tracking-wider rounded">
+          PROCEED TO CHECKOUT
+        </button>
+      </div>
+    </div>
+
+    <!-- Product Details Modal Popup with 3D Fluid Rotation -->
+    <div id="product-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+      <div class="bg-zinc-950 border border-zinc-800 rounded-lg max-w-lg w-full overflow-hidden relative shadow-2xl p-6 text-white">
+        <button onclick="closeProductModal()" class="absolute top-3 right-3 text-zinc-400 hover:text-white bg-black/50 rounded-full p-2 text-xl font-bold z-10">&times;</button>
+        <div id="modal-body"></div>
+      </div>
+    </div>
+
+    <!-- Hero Section with Highly Visible Header Image -->
+    <section class="flex items-center justify-center relative overflow-hidden pt-46 pb-26 px-4 min-h-[50vh] text-center">
+      <div class="absolute inset-0 z-0">
+        <img src="images/2Niggas.png" alt="Header Background" class="w-full h-full object-cover object-top opacity-85">
+      </div>
+      <div class="absolute inset-0 bg-black/45 z-0"></div>
+
+      <div class="text-center z-10 max-w-3xl mx-auto">
+        <h1 class="text-4xl sm:text-6xl lg:text-6xl font-black mb-4 tracking-tighter leading-none text-white drop-shadow-md">
+          STREET
+          <span class="text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-200">CULTURE</span>
+        </h1>
+        <p class="text-sm sm:text-lg lg:text-xl text-gray-50 mb-4 font-light px-3 drop-shadow">
+          Redefining urban fashion with premium quality and cutting-edge design.</p>
+        <a href="#magazine-section-1" class="inline-block bg-white text-black px-2 py-0.5 text-base font-bold hover:bg-gray-20 transition-all transform hover:scale-10 rounded shadow-x0.5">
+          EXPLORE</a></div>
+    </section>
+
+    <!-- NEW ARRIVALS: Infinite Slow Motion Ticker Section (16 Items, 3/4 items visible on screen) -->
+    <section class="py-8 sm:py-12 px-2 sm:px-6 relative overflow-hidden bg-zinc-950 border-b border-zinc-900" id="new-arrivals-section">
+      <div class="absolute inset-0 z-0">
+        <img src="images/Backdrop.png" alt="Backdrop" class="w-full h-full object-cover opacity-15">
+      </div>
+      <div class="absolute inset-0 bg-black/30 z-0"></div>
+
+      <div class="max-w-7xl mx-auto relative z-10">
+        <div class="text-center mb-6 sm:mb-8">
+          <h2 id="arrivals-title" class="text-xl sm:text-3xl font-black mb-1 text-white tracking-tight">NEW ARRIVALS</h2>
+          <p class="text-gray-400 text-xs sm:text-sm">Fresh drops and iconic sneaker rotations straight off the street</p>
+        </div>
+
+        <!-- Infinite Ticker Container -->
+        <div class="overflow-hidden w-full relative py-2">
+          <div class="ticker-track gap-4 sm:gap-6">
+            <!-- Rendered twice to create seamless infinite scrolling loop -->
+            <!-- BLOCK 1 (Original 16 Items) -->
+            <div class="flex gap-4 sm:gap-6 items-center">
+              <div class="w-48 sm:w-60 flex-shrink-0 p-3 bg-zinc-900/50 border border-zinc-800 rounded-lg flex flex-col items-center text-center">
+                <div class="w-full aspect-[16/9] relative overflow-hidden mb-2 flex items-center justify-center">
+                  <img src="images/OUAS0019-1.png" alt="Asics Gel Blue" class="w-full h-full object-contain transparent-bg-img drop-shadow-xl scale-110">
+                </div>
+                <span class="text-xs font-black uppercase tracking-wider text-white truncate w-full">Asics Gel (Blue)</span>
+                <span class="text-[10px] text-zinc-400 font-mono mt-0.5"></span>
+              </div>
+
+              <div class="w-48 sm:w-60 flex-shrink-0 p-3 bg-zinc-900/50 border border-zinc-800 rounded-lg flex flex-col items-center text-center">
+                <div class="w-full aspect-[16/9] relative overflow-hidden mb-2 flex items-center justify-center">
+                  <img src="images/pink%20sneakers.png" alt="Asics Gel Pink" class="w-full h-full object-contain transparent-bg-img drop-shadow-xl scale-110">
+                </div>
+                <span class="text-xs font-black uppercase tracking-wider text-white truncate w-full">Asics Gel (Pink)</span>
+                <span class="text-[10px] text-zinc-400 font-mono mt-0.5"></span>
+              </div>
+
+              <div class="w-48 sm:w-60 flex-shrink-0 p-3 bg-zinc-900/50 border border-zinc-800 rounded-lg flex flex-col items-center text-center">
+                <div class="w-full aspect-[16/9] relative overflow-hidden mb-2 flex items-center justify-center">
+                  <img src="images/OUAS0019-1.png" alt="Samba Adidas" class="w-full h-full object-contain transparent-bg-img drop-shadow-xl scale-110">
+                </div>
+                <span class="text-xs font-black uppercase tracking-wider text-white truncate w-full">Samba Adidas</span>
+                <span class="text-[10px] text-zinc-400 font-mono mt-0.5"></span>
+              </div>
+
+              <div class="w-48 sm:w-60 flex-shrink-0 p-3 bg-zinc-900/50 border border-zinc-800 rounded-lg flex flex-col items-center text-center">
+                <div class="w-full aspect-[16/9] relative overflow-hidden mb-2 flex items-center justify-center">
+                  <img src="images/pink%20sneakers.png" alt="SB Dunks" class="w-full h-full object-contain transparent-bg-img drop-shadow-xl scale-110">
+                </div>
+                <span class="text-xs font-black uppercase tracking-wider text-white truncate w-full">SB Dunks</span>
+                <span class="text-[10px] text-zinc-400 font-mono mt-0.5"></span>
+              </div>
+
+              <div class="w-48 sm:w-60 flex-shrink-0 p-3 bg-zinc-900/50 border border-zinc-800 rounded-lg flex flex-col items-center text-center">
+                <div class="w-full aspect-[16/9] relative overflow-hidden mb-2 flex items-center justify-center">
+                  <img src="images/OUAS0019-1.png" alt="Air Max Retro" class="w-full h-full object-contain transparent-bg-img drop-shadow-xl scale-110">
+                </div>
+                <span class="text-xs font-black uppercase tracking-wider text-white truncate w-full">Air Max Retro</span>
+                <span class="text-[10px] text-zinc-400 font-mono mt-0.5"></span>
+              </div>
+
+              <div class="w-48 sm:w-60 flex-shrink-0 p-3 bg-zinc-900/50 border border-zinc-800 rounded-lg flex flex-col items-center text-center">
+                <div class="w-full aspect-[16/9] relative overflow-hidden mb-2 flex items-center justify-center">
+                  <img src="images/pink%20sneakers.png" alt="Naked Wolfe" class="w-full h-full object-contain transparent-bg-img drop-shadow-xl scale-110">
+                </div>
+                <span class="text-xs font-black uppercase tracking-wider text-white truncate w-full">Naked Wolfe</span>
+                <span class="text-[10px] text-zinc-400 font-mono mt-0.5"></span>
+              </div>
+
+              <div class="w-48 sm:w-60 flex-shrink-0 p-3 bg-zinc-900/50 border border-zinc-800 rounded-lg flex flex-col items-center text-center">
+                <div class="w-full aspect-[16/9] relative overflow-hidden mb-2 flex items-center justify-center">
+                  <img src="images/OUAS0019-1.png" alt="Jordan Low OG" class="w-full h-full object-contain transparent-bg-img drop-shadow-xl scale-110">
+                </div>
+                <span class="text-xs font-black uppercase tracking-wider text-white truncate w-full">Jordan Low OG</span>
+                <span class="text-[10px] text-zinc-400 font-mono mt-0.5"></span>
+              </div>
+
+              <div class="w-48 sm:w-60 flex-shrink-0 p-3 bg-zinc-900/50 border border-zinc-800 rounded-lg flex flex-col items-center text-center">
+                <div class="w-full aspect-[16/9] relative overflow-hidden mb-2 flex items-center justify-center">
+                  <img src="images/pink%20sneakers.png" alt="Forum 84 Low" class="w-full h-full object-contain transparent-bg-img drop-shadow-xl scale-110">
+                </div>
+                <span class="text-xs font-black uppercase tracking-wider text-white truncate w-full">Forum 84 Low</span>
+                <span class="text-[10px] text-zinc-400 font-mono mt-0.5"></span>
+              </div>
+
+              <div class="w-48 sm:w-60 flex-shrink-0 p-3 bg-zinc-900/50 border border-zinc-800 rounded-lg flex flex-col items-center text-center">
+                <div class="w-full aspect-[16/9] relative overflow-hidden mb-2 flex items-center justify-center">
+                  <img src="images/OUAS0019-1.png" alt="New Balance 550" class="w-full h-full object-contain transparent-bg-img drop-shadow-xl scale-110">
+                </div>
+                <span class="text-xs font-black uppercase tracking-wider text-white truncate w-full">New Balance 550</span>
+                <span class="text-[10px] text-zinc-400 font-mono mt-0.5"></span>
+              </div>
+
+              <div class="w-48 sm:w-60 flex-shrink-0 p-3 bg-zinc-900/50 border border-zinc-800 rounded-lg flex flex-col items-center text-center">
+                <div class="w-full aspect-[16/9] relative overflow-hidden mb-2 flex items-center justify-center">
+                  <img src="images/pink%20sneakers.png" alt="Salomon XT-6" class="w-full h-full object-contain transparent-bg-img drop-shadow-xl scale-110">
+                </div>
+                <span class="text-xs font-black uppercase tracking-wider text-white truncate w-full">Salomon XT-6</span>
+                <span class="text-[10px] text-zinc-400 font-mono mt-0.5"></span>
+              </div>
+
+              <div class="w-48 sm:w-60 flex-shrink-0 p-3 bg-zinc-900/50 border border-zinc-800 rounded-lg flex flex-col items-center text-center">
+                <div class="w-full aspect-[16/9] relative overflow-hidden mb-2 flex items-center justify-center">
+                  <img src="images/OUAS0019-1.png" alt="Campus 00s" class="w-full h-full object-contain transparent-bg-img drop-shadow-xl scale-110">
+                </div>
+                <span class="text-xs font-black uppercase tracking-wider text-white truncate w-full">Campus 00s</span>
+                <span class="text-[10px] text-zinc-400 font-mono mt-0.5"></span>
+              </div>
+
+              <div class="w-48 sm:w-60 flex-shrink-0 p-3 bg-zinc-900/50 border border-zinc-800 rounded-lg flex flex-col items-center text-center">
+                <div class="w-full aspect-[16/9] relative overflow-hidden mb-2 flex items-center justify-center">
+                  <img src="images/pink%20sneakers.png" alt="Puma Palermo" class="w-full h-full object-contain transparent-bg-img drop-shadow-xl scale-110">
+                </div>
+                <span class="text-xs font-black uppercase tracking-wider text-white truncate w-full">Puma Palermo</span>
+                <span class="text-[10px] text-zinc-400 font-mono mt-0.5"></span>
+              </div>
+
+              <div class="w-48 sm:w-60 flex-shrink-0 p-3 bg-zinc-900/50 border border-zinc-800 rounded-lg flex flex-col items-center text-center">
+                <div class="w-full aspect-[16/9] relative overflow-hidden mb-2 flex items-center justify-center">
+                  <img src="images/OUAS0019-1.png" alt="Travis Scott Trainer" class="w-full h-full object-contain transparent-bg-img drop-shadow-xl scale-110">
+                </div>
+                <span class="text-xs font-black uppercase tracking-wider text-white truncate w-full">Cactus Trainer</span>
+                <span class="text-[10px] text-zinc-400 font-mono mt-0.5"></span>
+              </div>
+
+              <div class="w-48 sm:w-60 flex-shrink-0 p-3 bg-zinc-900/50 border border-zinc-800 rounded-lg flex flex-col items-center text-center">
+                <div class="w-full aspect-[16/9] relative overflow-hidden mb-2 flex items-center justify-center">
+                  <img src="images/pink%20sneakers.png" alt="Rick Owens Runner" class="w-full h-full object-contain transparent-bg-img drop-shadow-xl scale-110">
+                </div>
+                <span class="text-xs font-black uppercase tracking-wider text-white truncate w-full">Subterranean Runner</span>
+                <span class="text-[10px] text-zinc-400 font-mono mt-0.5"></span>
+              </div>
+
+              <div class="w-48 sm:w-60 flex-shrink-0 p-3 bg-zinc-900/50 border border-zinc-800 rounded-lg flex flex-col items-center text-center">
+                <div class="w-full aspect-[16/9] relative overflow-hidden mb-2 flex items-center justify-center">
+                  <img src="images/OUAS0019-1.png" alt="Off-Court Hi" class="w-full h-full object-contain transparent-bg-img drop-shadow-xl scale-110">
+                </div>
+                <span class="text-xs font-black uppercase tracking-wider text-white truncate w-full">Off-Court Hi</span>
+                <span class="text-[10px] text-zinc-400 font-mono mt-0.5"></span>
+              </div>
+
+              <div class="w-48 sm:w-60 flex-shrink-0 p-3 bg-zinc-900/50 border border-zinc-800 rounded-lg flex flex-col items-center text-center">
+                <div class="w-full aspect-[16/9] relative overflow-hidden mb-2 flex items-center justify-center">
+                  <img src="images/pink%20sneakers.png" alt="Gel-Kayano 14" class="w-full h-full object-contain transparent-bg-img drop-shadow-xl scale-110">
+                </div>
+                <span class="text-xs font-black uppercase tracking-wider text-white truncate w-full">Gel-Kayano 14</span>
+                <span class="text-[10px] text-zinc-400 font-mono mt-0.5"></span>
+              </div>
+            </div>
+
+            <!-- BLOCK 2 (Exact Duplicate for Seamless Infinite Ticker Loop) -->
+            <div class="flex gap-4 sm:gap-6 items-center">
+              <div class="w-48 sm:w-60 flex-shrink-0 p-3 bg-zinc-900/50 border border-zinc-800 rounded-lg flex flex-col items-center text-center">
+                <div class="w-full aspect-[16/9] relative overflow-hidden mb-2 flex items-center justify-center">
+                  <img src="images/OUAS0019-1.png" alt="Asics Gel Blue" class="w-full h-full object-contain transparent-bg-img drop-shadow-xl scale-110">
+                </div>
+                <span class="text-xs font-black uppercase tracking-wider text-white truncate w-full">Asics Gel (Blue)</span>
+                <span class="text-[10px] text-zinc-400 font-mono mt-0.5"></span>
+              </div>
+
+              <div class="w-48 sm:w-60 flex-shrink-0 p-3 bg-zinc-900/50 border border-zinc-800 rounded-lg flex flex-col items-center text-center">
+                <div class="w-full aspect-[16/9] relative overflow-hidden mb-2 flex items-center justify-center">
+                  <img src="images/pink%20sneakers.png" alt="Asics Gel Pink" class="w-full h-full object-contain transparent-bg-img drop-shadow-xl scale-110">
+                </div>
+                <span class="text-xs font-black uppercase tracking-wider text-white truncate w-full">Asics Gel (Pink)</span>
+                <span class="text-[10px] text-zinc-400 font-mono mt-0.5"></span>
+              </div>
+
+              <div class="w-48 sm:w-60 flex-shrink-0 p-3 bg-zinc-900/50 border border-zinc-800 rounded-lg flex flex-col items-center text-center">
+                <div class="w-full aspect-[16/9] relative overflow-hidden mb-2 flex items-center justify-center">
+                  <img src="images/OUAS0019-1.png" alt="Samba Adidas" class="w-full h-full object-contain transparent-bg-img drop-shadow-xl scale-110">
+                </div>
+                <span class="text-xs font-black uppercase tracking-wider text-white truncate w-full">Samba Adidas</span>
+                <span class="text-[10px] text-zinc-400 font-mono mt-0.5"></span>
+              </div>
+
+              <div class="w-48 sm:w-60 flex-shrink-0 p-3 bg-zinc-900/50 border border-zinc-800 rounded-lg flex flex-col items-center text-center">
+                <div class="w-full aspect-[16/9] relative overflow-hidden mb-2 flex items-center justify-center">
+                  <img src="images/pink%20sneakers.png" alt="SB Dunks" class="w-full h-full object-contain transparent-bg-img drop-shadow-xl scale-110">
+                </div>
+                <span class="text-xs font-black uppercase tracking-wider text-white truncate w-full">SB Dunks</span>
+                <span class="text-[10px] text-zinc-400 font-mono mt-0.5"></span>
+              </div>
+
+              <div class="w-48 sm:w-60 flex-shrink-0 p-3 bg-zinc-900/50 border border-zinc-800 rounded-lg flex flex-col items-center text-center">
+                <div class="w-full aspect-[16/9] relative overflow-hidden mb-2 flex items-center justify-center">
+                  <img src="images/OUAS0019-1.png" alt="Air Max Retro" class="w-full h-full object-contain transparent-bg-img drop-shadow-xl scale-110">
+                </div>
+                <span class="text-xs font-black uppercase tracking-wider text-white truncate w-full">Air Max Retro</span>
+                <span class="text-[10px] text-zinc-400 font-mono mt-0.5"></span>
+              </div>
+
+              <div class="w-48 sm:w-60 flex-shrink-0 p-3 bg-zinc-900/50 border border-zinc-800 rounded-lg flex flex-col items-center text-center">
+                <div class="w-full aspect-[16/9] relative overflow-hidden mb-2 flex items-center justify-center">
+                  <img src="images/pink%20sneakers.png" alt="Naked Wolfe" class="w-full h-full object-contain transparent-bg-img drop-shadow-xl scale-110">
+                </div>
+                <span class="text-xs font-black uppercase tracking-wider text-white truncate w-full">Naked Wolfe</span>
+                <span class="text-[10px] text-zinc-400 font-mono mt-0.5"></span>
+              </div>
+
+              <div class="w-48 sm:w-60 flex-shrink-0 p-3 bg-zinc-900/50 border border-zinc-800 rounded-lg flex flex-col items-center text-center">
+                <div class="w-full aspect-[16/9] relative overflow-hidden mb-2 flex items-center justify-center">
+                  <img src="images/OUAS0019-1.png" alt="Jordan Low OG" class="w-full h-full object-contain transparent-bg-img drop-shadow-xl scale-110">
+                </div>
+                <span class="text-xs font-black uppercase tracking-wider text-white truncate w-full">Jordan Low OG</span>
+                <span class="text-[10px] text-zinc-400 font-mono mt-0.5"></span>
+              </div>
+
+              <div class="w-48 sm:w-60 flex-shrink-0 p-3 bg-zinc-900/50 border border-zinc-800 rounded-lg flex flex-col items-center text-center">
+                <div class="w-full aspect-[16/9] relative overflow-hidden mb-2 flex items-center justify-center">
+                  <img src="images/pink%20sneakers.png" alt="Forum 84 Low" class="w-full h-full object-contain transparent-bg-img drop-shadow-xl scale-110">
+                </div>
+                <span class="text-xs font-black uppercase tracking-wider text-white truncate w-full">Forum 84 Low</span>
+                <span class="text-[10px] text-zinc-400 font-mono mt-0.5"></span>
+              </div>
+
+              <div class="w-48 sm:w-60 flex-shrink-0 p-3 bg-zinc-900/50 border border-zinc-800 rounded-lg flex flex-col items-center text-center">
+                <div class="w-full aspect-[16/9] relative overflow-hidden mb-2 flex items-center justify-center">
+                  <img src="images/OUAS0019-1.png" alt="New Balance 550" class="w-full h-full object-contain transparent-bg-img drop-shadow-xl scale-110">
+                </div>
+                <span class="text-xs font-black uppercase tracking-wider text-white truncate w-full">New Balance 550</span>
+                <span class="text-[10px] text-zinc-400 font-mono mt-0.5"></span>
+              </div>
+
+              <div class="w-48 sm:w-60 flex-shrink-0 p-3 bg-zinc-900/50 border border-zinc-800 rounded-lg flex flex-col items-center text-center">
+                <div class="w-full aspect-[16/9] relative overflow-hidden mb-2 flex items-center justify-center">
+                  <img src="images/pink%20sneakers.png" alt="Salomon XT-6" class="w-full h-full object-contain transparent-bg-img drop-shadow-xl scale-110">
+                </div>
+                <span class="text-xs font-black uppercase tracking-wider text-white truncate w-full">Salomon XT-6</span>
+                <span class="text-[10px] text-zinc-400 font-mono mt-0.5"></span>
+              </div>
+
+              <div class="w-48 sm:w-60 flex-shrink-0 p-3 bg-zinc-900/50 border border-zinc-800 rounded-lg flex flex-col items-center text-center">
+                <div class="w-full aspect-[16/9] relative overflow-hidden mb-2 flex items-center justify-center">
+                  <img src="images/OUAS0019-1.png" alt="Campus 00s" class="w-full h-full object-contain transparent-bg-img drop-shadow-xl scale-110">
+                </div>
+                <span class="text-xs font-black uppercase tracking-wider text-white truncate w-full">Campus 00s</span>
+                <span class="text-[10px] text-zinc-400 font-mono mt-0.5"></span>
+              </div>
+
+              <div class="w-48 sm:w-60 flex-shrink-0 p-3 bg-zinc-900/50 border border-zinc-800 rounded-lg flex flex-col items-center text-center">
+                <div class="w-full aspect-[16/9] relative overflow-hidden mb-2 flex items-center justify-center">
+                  <img src="images/pink%20sneakers.png" alt="Puma Palermo" class="w-full h-full object-contain transparent-bg-img drop-shadow-xl scale-110">
+                </div>
+                <span class="text-xs font-black uppercase tracking-wider text-white truncate w-full">Puma Palermo</span>
+                <span class="text-[10px] text-zinc-400 font-mono mt-0.5"></span>
+              </div>
+
+              <div class="w-48 sm:w-60 flex-shrink-0 p-3 bg-zinc-900/50 border border-zinc-800 rounded-lg flex flex-col items-center text-center">
+                <div class="w-full aspect-[16/9] relative overflow-hidden mb-2 flex items-center justify-center">
+                  <img src="images/OUAS0019-1.png" alt="Travis Scott Trainer" class="w-full h-full object-contain transparent-bg-img drop-shadow-xl scale-110">
+                </div>
+                <span class="text-xs font-black uppercase tracking-wider text-white truncate w-full">Cactus Trainer</span>
+                <span class="text-[10px] text-zinc-400 font-mono mt-0.5"></span>
+              </div>
+
+              <div class="w-48 sm:w-60 flex-shrink-0 p-3 bg-zinc-900/50 border border-zinc-800 rounded-lg flex flex-col items-center text-center">
+                <div class="w-full aspect-[16/9] relative overflow-hidden mb-2 flex items-center justify-center">
+                  <img src="images/pink%20sneakers.png" alt="Rick Owens Runner" class="w-full h-full object-contain transparent-bg-img drop-shadow-xl scale-110">
+                </div>
+                <span class="text-xs font-black uppercase tracking-wider text-white truncate w-full">Subterranean Runner</span>
+                <span class="text-[10px] text-zinc-400 font-mono mt-0.5"></span>
+              </div>
+
+              <div class="w-48 sm:w-60 flex-shrink-0 p-3 bg-zinc-900/50 border border-zinc-800 rounded-lg flex flex-col items-center text-center">
+                <div class="w-full aspect-[16/9] relative overflow-hidden mb-2 flex items-center justify-center">
+                  <img src="images/OUAS0019-1.png" alt="Off-Court Hi" class="w-full h-full object-contain transparent-bg-img drop-shadow-xl scale-110">
+                </div>
+                <span class="text-xs font-black uppercase tracking-wider text-white truncate w-full">Off-Court Hi</span>
+                <span class="text-[10px] text-zinc-400 font-mono mt-0.5"></span>
+              </div>
+
+              <div class="w-48 sm:w-60 flex-shrink-0 p-3 bg-zinc-900/50 border border-zinc-800 rounded-lg flex flex-col items-center text-center">
+                <div class="w-full aspect-[16/9] relative overflow-hidden mb-2 flex items-center justify-center">
+                  <img src="images/pink%20sneakers.png" alt="Gel-Kayano 14" class="w-full h-full object-contain transparent-bg-img drop-shadow-xl scale-110">
+                </div>
+                <span class="text-xs font-black uppercase tracking-wider text-white truncate w-full">Gel-Kayano 14</span>
+                <span class="text-[10px] text-zinc-400 font-mono mt-0.5"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Magazine Editorial Feature Section: Issue No. 01 -->
+    <section class="py-12 sm:py-16 px-4 sm:px-6 bg-zinc-950 border-t border-b border-zinc-900 scroll-mt-24" id="magazine-section-1">
+      <div class="max-w-6xl mx-auto">
+        <div class="text-center mb-8 sm:mb-12">
+          <span class="text-[10px] sm:text-xs uppercase tracking-widest text-zinc-400 font-mono">GEEPEE PRINT & DIGITAL • ISSUE NO. 01</span>
+          <h2 class="magazine-title text-2xl sm:text-4xl lg:text-5xl font-black mt-2 text-white italic">The Evolution of Urban Grit</h2>
+        </div>
+        <div class="grid grid-cols-2 gap-4 sm:gap-8 items-center mb-8">
+          <div class="space-y-2 sm:space-y-4 text-zinc-300 text-xs sm:text-base leading-relaxed font-light">
+            <p>Channeling the heavyweight silhouettes popularized by icons like Kanye West and Travis Scott, our Issue No. 01 fleece and graphic staples define modern subterranean cool.</p>
+            <p>Engineered for effortless proportion and uncompromising comfort in any concrete jungle.</p>
+          </div>
+          <div class="inline-block relative self-start">
+            <div class="w-full h-48 sm:h-72 overflow-hidden rounded-lg relative shadow-2xl flex items-center justify-center bg-zinc-950/40">
+              <img src="images/Hoodie.png" alt="Issue 01" class="w-full h-full object-contain transition-all duration-700">
+            </div>
+            <div class="absolute bottom-1.5 left-1.5 sm:bottom-3 sm:left-3 bg-black/85 backdrop-blur-md px-1.5 py-0.5 sm:px-2 sm:py-0.5 border border-zinc-700 rounded-sm z-10">
+              <span class="text-[7px] sm:text-[9px] font-mono uppercase tracking-widest text-white">ISSUE 01</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4 Horizontal Floating Items -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-6 mt-8">
+          <div class="text-center flex flex-col justify-between">
+            <div>
+              <div onclick="openRotatableModal(1, 'Heavyweight Hoodie', 2500, 'images/Hoodie.png')" class="w-full aspect-square rounded overflow-hidden mb-2 flex items-center justify-center p-2 cursor-pointer hover:opacity-85 transition-opacity">
+                <img src="images/Hoodie.png" alt="Heavyweight Hoodie" class="w-full h-full object-contain">
+              </div>
+              <span class="text-[11px] sm:text-xs font-bold tracking-wider uppercase text-white block truncate">Heavyweight Hoodie</span>
+              <span class="text-[10px] sm:text-xs text-zinc-400 font-mono block mb-2">Ksh 3,500 <span class="text-[9px] text-emerald-400 font-mono block stock-label-1"></span></span>
+            </div>
+            <button onclick="quickAddFromCard(1, 'Heavyweight Hoodie', 2500, 'images/Hoodie.png')" class="w-full bg-white text-black text-[10px] sm:text-xs font-bold py-1.5 uppercase tracking-wider rounded hover:bg-zinc-200 transition-colors btn-stock-1">
+              Add To Cart
+            </button>
+          </div>
+
+          <div class="text-center flex flex-col justify-between">
+            <div>
+              <div onclick="openRotatableModal(2, 'Graphic Tee', 1500, 'images/tee%20(1).png')" class="w-full aspect-square rounded overflow-hidden mb-2 flex items-center justify-center p-2 cursor-pointer hover:opacity-85 transition-opacity">
+                <img src="images/tee%20(1).png" alt="Graphic Tee" class="w-full h-full object-contain">
+              </div>
+              <span class="text-[11px] sm:text-xs font-bold tracking-wider uppercase text-white block truncate">Ain'tDoneyet Tee</span>
+              <span class="text-[10px] sm:text-xs text-zinc-400 font-mono block mb-2">Ksh 1,500 <span class="text-[9px] text-emerald-400 font-mono block stock-label-2"></span></span>
+            </div>
+            <button onclick="quickAddFromCard(2, 'Graphic Tee', 1500, 'images/tee%20(1).png')" class="w-full bg-white text-black text-[10px] sm:text-xs font-bold py-1.5 uppercase tracking-wider rounded hover:bg-zinc-200 transition-colors btn-stock-2">
+              Add To Cart
+            </button>
+          </div>
+
+          <div class="text-center flex flex-col justify-between">
+            <div>
+              <div onclick="openRotatableModal(3, 'Orange T-Shirt', 1600, 'images/T-shirt%20Orange.png')" class="w-full aspect-square rounded overflow-hidden mb-2 flex items-center justify-center p-2 cursor-pointer hover:opacity-85 transition-opacity">
+                <img src="images/T-shirt%20Orange.png" alt="Orange T-Shirt" class="w-full h-full object-contain">
+              </div>
+              <span class="text-[11px] sm:text-xs font-bold tracking-wider uppercase text-white block truncate">GP.Tee (Orange)</span>
+              <span class="text-[10px] sm:text-xs text-zinc-400 font-mono block mb-2">Ksh 1,600 <span class="text-[9px] text-emerald-400 font-mono block stock-label-3"></span></span>
+            </div>
+            <button onclick="quickAddFromCard(3, 'Orange T-Shirt', 1600, 'images/T-shirt%20Orange.png')" class="w-full bg-white text-black text-[10px] sm:text-xs font-bold py-1.5 uppercase tracking-wider rounded hover:bg-zinc-200 transition-colors btn-stock-3">
+              Add To Cart
+            </button>
+          </div>
+
+          <div class="text-center flex flex-col justify-between">
+            <div>
+              <div onclick="openRotatableModal(4, 'Cargo Pants', 2500, 'images/pants.png')" class="w-full aspect-square rounded overflow-hidden mb-2 flex items-center justify-center p-2 cursor-pointer hover:opacity-85 transition-opacity">
+                <img src="images/pants.png" alt="Cargo Pants" class="w-full h-full object-contain">
+              </div>
+              <span class="text-[11px] sm:text-xs font-bold tracking-wider uppercase text-white block truncate">Cargo Pants</span>
+              <span class="text-[10px] sm:text-xs text-zinc-400 font-mono block mb-2">Ksh 2,500 <span class="text-[9px] text-emerald-400 font-mono block stock-label-4"></span></span>
+            </div>
+            <button onclick="quickAddFromCard(4, 'Cargo Pants', 2500, 'images/pants.png')" class="w-full bg-white text-black text-[10px] sm:text-xs font-bold py-1.5 uppercase tracking-wider rounded hover:bg-zinc-200 transition-colors btn-stock-4">
+              Add To Cart
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Magazine Editorial Feature Section: Issue No. 02 -->
+    <section class="py-12 sm:py-16 px-4 sm:px-6 bg-black border-b border-zinc-900 scroll-mt-24" id="magazine-section-2">
+      <div class="max-w-6xl mx-auto">
+        <div class="text-center mb-8 sm:mb-12">
+          <span class="text-[10px] sm:text-xs uppercase tracking-widest text-zinc-400 font-mono">GEEPEE PRINT & DIGITAL • ISSUE NO. 02</span>
+          <h2 class="magazine-title text-2xl sm:text-4xl lg:text-5xl font-black mt-2 text-white italic">Style your Moves</h2>
+        </div>
+        <div class="grid grid-cols-2 gap-4 sm:gap-8 items-center mb-8">
+          <div class="inline-block relative self-start">
+            <div class="w-full h-48 sm:h-72 overflow-hidden rounded-lg relative shadow-2xl flex items-center justify-center bg-zinc-950/40">
+              <img src="images/Style Your Moves.png" alt="Issue 02" class="w-full h-full object-contain transition-all duration-700">
+            </div>
+            <div class="absolute bottom-1.5 left-1.5 sm:bottom-3 sm:left-3 bg-black/85 backdrop-blur-md px-1.5 py-0.5 sm:px-2 sm:py-0.5 border border-zinc-700 rounded-sm z-10">
+              <span class="text-[7px] sm:text-[9px] font-mono uppercase tracking-widest text-white">ISSUE 02</span>
+            </div>
+          </div>
+          <div class="space-y-2 sm:space-y-4 text-zinc-300 text-xs sm:text-base leading-relaxed font-light">
+            <p>Inspired by the legendary footwear rotations of global sneaker icons like LeBron James, PJ Tucker, and classic retro collectors who treat kicks as holy artifacts.</p>
+            <p>Issue No. 02 curates the pinnacle silhouettes that anchor the entire global streetwear hierarchy.</p>
+          </div>
+        </div>
+
+        <!-- 4 Horizontal Floating Items -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-6 mt-8">
+          <div class="text-center flex flex-col justify-between">
+            <div>
+              <div onclick="openRotatableModal(6, 'Blue gel Asics Kayano', 3500, 'images/OUAS0019-1.png')" class="w-full aspect-square rounded overflow-hidden mb-2 flex items-center justify-center p-2 cursor-pointer hover:opacity-85 transition-opacity">
+                <img src="images/OUAS0019-1.png" alt="Blue gel Asics Kayano" class="w-full h-full object-contain">
+              </div>
+              <span class="text-[11px] sm:text-xs font-bold tracking-wider uppercase text-white block truncate">Blue gel Asics Kayano</span>
+              <span class="text-[10px] sm:text-xs text-zinc-400 font-mono block mb-2">Ksh 3,500 <span class="text-[9px] text-emerald-400 font-mono block stock-label-6"></span></span>
+            </div>
+            <button onclick="quickAddFromCard(6, 'Blue gel Asics Kayano', 2200, 'images/OUAS0019-1.png')" class="w-full bg-white text-black text-[10px] sm:text-xs font-bold py-1.5 uppercase tracking-wider rounded hover:bg-zinc-200 transition-colors btn-stock-6">
+              Add To Cart
+            </button>
+          </div>
+
+          <div class="text-center flex flex-col justify-between">
+            <div>
+              <div onclick="openRotatableModal(6, 'Pink gel Asics Kayano', 3500, 'images/pink%20sneakers.png')" class="w-full aspect-square rounded overflow-hidden mb-2 flex items-center justify-center p-2 cursor-pointer hover:opacity-85 transition-opacity">
+                <img src="images/pink%20sneakers.png" alt="Pink gel Asics Kayano" class="w-full h-full object-contain">
+              </div>
+              <span class="text-[11px] sm:text-xs font-bold tracking-wider uppercase text-white block truncate">Pink gel Asics Kayano</span>
+              <span class="text-[10px] sm:text-xs text-zinc-400 font-mono block mb-2">Ksh 3,500 <span class="text-[9px] text-emerald-400 font-mono block stock-label-6"></span></span>
+            </div>
+            <button onclick="quickAddFromCard(6, 'Pink gel Asics Kayano', 2500, 'images/pink%20sneakers.png')" class="w-full bg-white text-black text-[10px] sm:text-xs font-bold py-1.5 uppercase tracking-wider rounded hover:bg-zinc-200 transition-colors btn-stock-6">
+              Add To Cart
+            </button>
+          </div>
+
+          <div class="text-center flex flex-col justify-between">
+            <div>
+              <div onclick="openRotatableModal(6, 'Samba Adidas', 2500, 'images/OUAS0019-1.png')" class="w-full aspect-square rounded overflow-hidden mb-2 flex items-center justify-center p-2 cursor-pointer hover:opacity-85 transition-opacity">
+                <img src="images/OUAS0019-1.png" alt="Samba Adidas" class="w-full h-full object-contain">
+              </div>
+              <span class="text-[11px] sm:text-xs font-bold tracking-wider uppercase text-white block truncate">Samba Adidas</span>
+              <span class="text-[10px] sm:text-xs text-zinc-400 font-mono block mb-2">Ksh 2,500 <span class="text-[9px] text-emerald-400 font-mono block stock-label-6"></span></span>
+            </div>
+            <button onclick="quickAddFromCard(6, 'Samba Adidas', 2000, 'images/OUAS0019-1.png')" class="w-full bg-white text-black text-[10px] sm:text-xs font-bold py-1.5 uppercase tracking-wider rounded hover:bg-zinc-200 transition-colors btn-stock-6">
+              Add To Cart
+            </button>
+          </div>
+
+          <div class="text-center flex flex-col justify-between">
+            <div>
+              <div onclick="openRotatableModal(6, 'SB Dunks', 3500, 'images/pink%20sneakers.png')" class="w-full aspect-square rounded overflow-hidden mb-2 flex items-center justify-center p-2 cursor-pointer hover:opacity-85 transition-opacity">
+                <img src="images/pink%20sneakers.png" alt="Naked Wolfe" class="w-full h-full object-contain">
+              </div>
+              <span class="text-[11px] sm:text-xs font-bold tracking-wider uppercase text-white block truncate">SB DUNKS</span>
+              <span class="text-[10px] sm:text-xs text-zinc-400 font-mono block mb-2">Ksh 3,500 <span class="text-[9px] text-emerald-400 font-mono block stock-label-6"></span></span>
+            </div>
+            <button onclick="quickAddFromCard(6, 'Naked Wolfe', 3500, 'images/pink%20sneakers.png')" class="w-full bg-white text-black text-[10px] sm:text-xs font-bold py-1.5 uppercase tracking-wider rounded hover:bg-zinc-200 transition-colors btn-stock-6">
+              Add To Cart
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Magazine Editorial Feature Section: Issue No. 03 -->
+    <section class="py-12 sm:py-16 px-4 sm:px-6 bg-zinc-950 border-b border-zinc-900 scroll-mt-24" id="magazine-section-3">
+      <div class="max-w-6xl mx-auto">
+        <div class="text-center mb-8 sm:mb-12">
+          <span class="text-[10px] sm:text-xs uppercase tracking-widest text-zinc-400 font-mono">GEEPEE PRINT & DIGITAL • ISSUE NO. 03</span>
+          <h2 class="magazine-title text-2xl sm:text-4xl lg:text-5xl font-black mt-2 text-white italic">Architectural Layers</h2>
+        </div>
+        <div class="grid grid-cols-2 gap-4 sm:gap-8 items-center mb-8">
+          <div class="space-y-2 sm:space-y-4 text-zinc-300 text-xs sm:text-base leading-relaxed font-light">
+            <p>Emulating the utilitarian styling cues pioneered by visionary designers like Rick Owens and Virgil Abloh, Issue No. 03 celebrates multi-pocket architecture and rugged silhouettes.</p>
+            <p>Built for creators who value supreme structural depth and function-first tailoring.</p>
+          </div>
+          <div class="inline-block relative self-start">
+            <div class="w-full h-48 sm:h-72 overflow-hidden rounded-lg relative shadow-2xl flex items-center justify-center bg-zinc-950/40">
+              <img src="images/pants.png" alt="Issue 03" class="w-full h-full object-contain transition-all duration-700">
+            </div>
+            <div class="absolute bottom-1.5 left-1.5 sm:bottom-3 sm:left-3 bg-black/85 backdrop-blur-md px-1.5 py-0.5 sm:px-2 sm:py-0.5 border border-zinc-700 rounded-sm z-10">
+              <span class="text-[7px] sm:text-[9px] font-mono uppercase tracking-widest text-white">ISSUE 03</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4 Horizontal Floating Items -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-6 mt-8">
+          <div class="text-center flex flex-col justify-between">
+            <div>
+              <div onclick="openRotatableModal(4, 'Utility Cargo', 2600, 'images/pants.png')" class="w-full aspect-square rounded overflow-hidden mb-2 flex items-center justify-center p-2 cursor-pointer hover:opacity-85 transition-opacity">
+                <img src="images/pants.png" alt="Utility Cargo" class="w-full h-full object-contain">
+              </div>
+              <span class="text-[11px] sm:text-xs font-bold tracking-wider uppercase text-white block truncate">Utility Cargo</span>
+              <span class="text-[10px] sm:text-xs text-zinc-400 font-mono block mb-2">Ksh 2,600 <span class="text-[9px] text-emerald-400 font-mono block stock-label-4"></span></span>
+            </div>
+            <button onclick="quickAddFromCard(4, 'Utility Cargo', 2600, 'images/pants.png')" class="w-full bg-white text-black text-[10px] sm:text-xs font-bold py-1.5 uppercase tracking-wider rounded hover:bg-zinc-200 transition-colors btn-stock-4">
+              Add To Cart
+            </button>
+          </div>
+
+          <div class="text-center flex flex-col justify-between">
+            <div>
+              <div onclick="openRotatableModal(1, 'Layered Fleece', 2800, 'images/Hoodie.png')" class="w-full aspect-square rounded overflow-hidden mb-2 flex items-center justify-center p-2 cursor-pointer hover:opacity-85 transition-opacity">
+                <img src="images/Hoodie.png" alt="Layered Fleece" class="w-full h-full object-contain">
+              </div>
+              <span class="text-[11px] sm:text-xs font-bold tracking-wider uppercase text-white block truncate">Layered Fleece</span>
+              <span class="text-[10px] sm:text-xs text-zinc-400 font-mono block mb-2">Ksh 2,800 <span class="text-[9px] text-emerald-400 font-mono block stock-label-1"></span></span>
+            </div>
+            <button onclick="quickAddFromCard(1, 'Layered Fleece', 2800, 'images/Hoodie.png')" class="w-full bg-white text-black text-[10px] sm:text-xs font-bold py-1.5 uppercase tracking-wider rounded hover:bg-zinc-200 transition-colors btn-stock-1">
+              Add To Cart
+            </button>
+          </div>
+
+          <div class="text-center flex flex-col justify-between">
+            <div>
+              <div onclick="openRotatableModal(10, 'Shorts', 1800, 'images/rhude%20short.png')" class="w-full aspect-square rounded overflow-hidden mb-2 flex items-center justify-center p-2 cursor-pointer hover:opacity-85 transition-opacity">
+                <img src="images/rhude%20short.png" alt="Shorts" class="w-full h-full object-contain">
+              </div>
+              <span class="text-[11px] sm:text-xs font-bold tracking-wider uppercase text-white block truncate">Shorts</span>
+              <span class="text-[10px] sm:text-xs text-zinc-400 font-mono block mb-2">Ksh 1,800 <span class="text-[9px] text-emerald-400 font-mono block stock-label-10"></span></span>
+            </div>
+            <button onclick="quickAddFromCard(10, 'Shorts', 1800, 'images/rhude%20short.png')" class="w-full bg-white text-black text-[10px] sm:text-xs font-bold py-1.5 uppercase tracking-wider rounded hover:bg-zinc-200 transition-colors btn-stock-10">
+              Add To Cart
+            </button>
+          </div>
+
+          <div class="text-center flex flex-col justify-between">
+            <div>
+              <div onclick="openRotatableModal(11, 'Graphic Tee', 1550, 'images/teetee.jpg')" class="w-full aspect-square rounded overflow-hidden mb-2 flex items-center justify-center p-2 cursor-pointer hover:opacity-85 transition-opacity">
+                <img src="images/teetee.jpg" alt="Graphic Tee" class="w-full h-full object-contain">
+              </div>
+              <span class="text-[11px] sm:text-xs font-bold tracking-wider uppercase text-white block truncate">Graphic Tee</span>
+              <span class="text-[10px] sm:text-xs text-zinc-400 font-mono block mb-2">Ksh 1,550 <span class="text-[9px] text-emerald-400 font-mono block stock-label-11"></span></span>
+            </div>
+            <button onclick="quickAddFromCard(11, 'Graphic Tee', 1550, 'images/teetee.jpg')" class="w-full bg-white text-black text-[10px] sm:text-xs font-bold py-1.5 uppercase tracking-wider rounded hover:bg-zinc-200 transition-colors btn-stock-11">
+              Add To Cart
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Magazine Editorial Feature Section: Issue No. 05 -->
+    <section class="py-12 sm:py-16 px-4 sm:px-6 bg-black border-b border-zinc-900 scroll-mt-24" id="magazine-section-5">
+      <div class="max-w-6xl mx-auto">
+        <div class="text-center mb-8 sm:mb-12">
+          <span class="text-[10px] sm:text-xs uppercase tracking-widest text-zinc-400 font-mono">GEEPEE PRINT & DIGITAL • ISSUE NO. 05</span>
+          <h2 class="magazine-title text-2xl sm:text-4xl lg:text-5xl font-black mt-2 text-white italic">Cold Cubarn Ice & BB Simon Belts</h2>
+        </div>
+        <div class="grid grid-cols-2 gap-4 sm:gap-8 items-center mb-8">
+          <div class="inline-block relative self-start">
+            <div class="w-full h-48 sm:h-72 overflow-hidden rounded-lg relative shadow-2xl flex items-center justify-center bg-zinc-950/40">
+              <img src="images/Ice chain.png" alt="Issue 05" class="w-full h-full object-contain transition-all duration-700">
+            </div>
+            <div class="absolute bottom-1.5 left-1.5 sm:bottom-3 sm:left-3 bg-black/85 backdrop-blur-md px-1.5 py-0.5 sm:px-2 sm:py-0.5 border border-zinc-700 rounded-sm z-10">
+              <span class="text-[7px] sm:text-[9px] font-mono uppercase tracking-widest text-white">ISSUE 05</span>
+            </div>
+          </div>
+          <div class="space-y-2 sm:space-y-4 text-zinc-300 text-xs sm:text-base leading-relaxed font-light">
+            <p>Channeling high-shine diamond hardware popularized by hip-hop icons like Lil Baby and Gunna, combined with hand-crafted crystal rhinestone leather BB Simon belts inspired by legends like Jim Jones and Lil Uzi Vert.</p>
+            <p>Designed to catch every beam of light and project unapologetic, statement-making luxury.</p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-6 mt-8">
+          <div class="text-center flex flex-col justify-between">
+            <div>
+              <div onclick="openRotatableModal(7, 'Chain Necklace', 1500, 'images/Ice chain.png')" class="w-full aspect-square rounded overflow-hidden mb-2 flex items-center justify-center p-2 cursor-pointer hover:opacity-85 transition-opacity">
+                <img src="images/Ice chain.png" alt="Chain Necklace" class="w-full h-full object-contain">
+              </div>
+              <span class="text-[11px] sm:text-xs font-bold tracking-wider uppercase text-white block truncate">Chain Necklace</span>
+              <span class="text-[10px] sm:text-xs text-zinc-400 font-mono block mb-2">Ksh 1,500 <span class="text-[9px] text-emerald-400 font-mono block stock-label-7"></span></span>
+            </div>
+            <button onclick="quickAddFromCard(7, 'Chain Necklace', 1500, 'images/Ice chain.png')" class="w-full bg-white text-black text-[10px] sm:text-xs font-bold py-1.5 uppercase tracking-wider rounded hover:bg-zinc-200 transition-colors btn-stock-7">
+              Add To Cart
+            </button>
+          </div>
+
+          <div class="text-center flex flex-col justify-between">
+            <div>
+              <div onclick="openRotatableModal(8, 'Crystal Rhinestone Belt', 3200, 'images/bbsimon.png')" class="w-full aspect-square rounded overflow-hidden mb-2 flex items-center justify-center p-2 cursor-pointer hover:opacity-85 transition-opacity">
+                <img src="images/bbsimon.png" alt="Crystal Rhinestone Belt" class="w-full h-full object-contain">
+              </div>
+              <span class="text-[11px] sm:text-xs font-bold tracking-wider uppercase text-white block truncate">Crystal Rhinestone Belt</span>
+              <span class="text-[10px] sm:text-xs text-zinc-400 font-mono block mb-2">Ksh 3,200 <span class="text-[9px] text-emerald-400 font-mono block stock-label-8"></span></span>
+            </div>
+            <button onclick="quickAddFromCard(8, 'Crystal Rhinestone Belt', 3200, 'images/bbsimon.png')" class="w-full bg-white text-black text-[10px] sm:text-xs font-bold py-1.5 uppercase tracking-wider rounded hover:bg-zinc-200 transition-colors btn-stock-8">
+              Add To Cart
+            </button>
+          </div>
+
+          <div class="text-center flex flex-col justify-between">
+            <div>
+              <div onclick="openRotatableModal(8, 'Ornate Buckle Leather Belt', 3500, 'images/belts.png')" class="w-full aspect-square rounded overflow-hidden mb-2 flex items-center justify-center p-2 cursor-pointer hover:opacity-85 transition-opacity">
+                <img src="images/belts.png" alt="Ornate Buckle Leather Belt" class="w-full h-full object-contain">
+              </div>
+              <span class="text-[11px] sm:text-xs font-bold tracking-wider uppercase text-white block truncate">Ornate Buckle Belt</span>
+              <span class="text-[10px] sm:text-xs text-zinc-400 font-mono block mb-2">Ksh 3,500 <span class="text-[9px] text-emerald-400 font-mono block stock-label-8"></span></span>
+            </div>
+            <button onclick="quickAddFromCard(8, 'Ornate Buckle Leather Belt', 3500, 'images/belts.png')" class="w-full bg-white text-black text-[10px] sm:text-xs font-bold py-1.5 uppercase tracking-wider rounded hover:bg-zinc-200 transition-colors btn-stock-8">
+              Add To Cart
+            </button>
+          </div>
+
+          <div class="text-center flex flex-col justify-between">
+            <div>
+              <div onclick="openRotatableModal(8, 'Iced Studded Statement Belt', 3800, 'images/ffa4aebb67ea41dfb036ca5df931a2c0.png')" class="w-full aspect-square rounded overflow-hidden mb-2 flex items-center justify-center p-2 cursor-pointer hover:opacity-85 transition-opacity">
+                <img src="images/ffa4aebb67ea41dfb036ca5df931a2c0.png" alt="Iced Studded Statement Belt" class="w-full h-full object-contain">
+              </div>
+              <span class="text-[11px] sm:text-xs font-bold tracking-wider uppercase text-white block truncate">Iced Studded Belt</span>
+              <span class="text-[10px] sm:text-xs text-zinc-400 font-mono block mb-2">Ksh 3,800 <span class="text-[9px] text-emerald-400 font-mono block stock-label-8"></span></span>
+            </div>
+            <button onclick="quickAddFromCard(8, 'Iced Studded Statement Belt', 3800, 'images/ffa4aebb67ea41dfb036ca5df931a2c0.png')" class="w-full bg-white text-black text-[10px] sm:text-xs font-bold py-1.5 uppercase tracking-wider rounded hover:bg-zinc-200 transition-colors btn-stock-8">
+              Add To Cart
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Magazine Editorial Feature Section: Issue No. 06 -->
+    <section class="py-12 sm:py-16 px-4 sm:px-6 bg-zinc-950 border-b border-zinc-900 scroll-mt-24" id="magazine-section-6">
+      <div class="max-w-6xl mx-auto">
+        <div class="text-center mb-8 sm:mb-12">
+          <span class="text-[10px] sm:text-xs uppercase tracking-widest text-zinc-400 font-mono">GEEPEE PRINT & DIGITAL • ISSUE NO. 06</span>
+          <h2 class="magazine-title text-2xl sm:text-4xl lg:text-5xl font-black mt-2 text-white italic">Y2K Sunglasses</h2>
+        </div>
+        <div class="grid grid-cols-2 gap-4 sm:gap-8 items-center mb-8">
+          <div class="space-y-2 sm:space-y-4 text-zinc-300 text-xs sm:text-base leading-relaxed font-light">
+            <p>Embracing futuristic wraparound silhouettes and nostalgic millennium aesthetics, Y2K sunglasses are the definitive finishing piece for forward-thinking streetwear.</p>
+            <p>Engineered for maximum visual presence and uncompromising cyber-chic style.</p>
+          </div>
+          <div class="inline-block relative self-start">
+            <div class="w-full h-48 sm:h-72 overflow-hidden rounded-lg relative shadow-2xl flex items-center justify-center bg-zinc-950/40">
+              <img src="images/01d075d4-94d0-4686-938b-8973034240ff.png" alt="Issue 06" class="w-full h-full object-contain transition-all duration-700">
+            </div>
+            <div class="absolute bottom-1.5 left-1.5 sm:bottom-3 sm:left-3 bg-black/85 backdrop-blur-md px-1.5 py-0.5 sm:px-2 sm:py-0.5 border border-zinc-700 rounded-sm z-10">
+              <span class="text-[7px] sm:text-[9px] font-mono uppercase tracking-widest text-white">ISSUE 06</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-6 mt-8">
+          <div class="text-center flex flex-col justify-between">
+            <div>
+              <div onclick="openRotatableModal(9, 'Cyber Wraparound Shades', 2000, 'images/01d075d4-94d0-4686-938b-8973034240ff.png')" class="w-full aspect-square rounded overflow-hidden mb-2 flex items-center justify-center p-2 cursor-pointer hover:opacity-85 transition-opacity">
+                <img src="images/01d075d4-94d0-4686-938b-8973034240ff.png" alt="Cyber Wraparound Shades" class="w-full h-full object-contain">
+              </div>
+              <span class="text-[11px] sm:text-xs font-bold tracking-wider uppercase text-white block truncate">Cyber Wraparound Shades</span>
+              <span class="text-[10px] sm:text-xs text-zinc-400 font-mono block mb-2">Ksh 2,000 <span class="text-[9px] text-emerald-400 font-mono block stock-label-9"></span></span>
+            </div>
+            <button onclick="quickAddFromCard(9, 'Cyber Wraparound Shades', 2000, 'images/01d075d4-94d0-4686-938b-8973034240ff.png')" class="w-full bg-white text-black text-[10px] sm:text-xs font-bold py-1.5 uppercase tracking-wider rounded hover:bg-zinc-200 transition-colors btn-stock-9">
+              Add To Cart
+            </button>
+          </div>
+
+          <div class="text-center flex flex-col justify-between">
+            <div>
+              <div onclick="openRotatableModal(9, 'Matrix Tinted Visor', 2200, 'images/21dQ4sbELLL._SY350_.png')" class="w-full aspect-square rounded overflow-hidden mb-2 flex items-center justify-center p-2 cursor-pointer hover:opacity-85 transition-opacity">
+                <img src="images/21dQ4sbELLL._SY350_.png" alt="Matrix Tinted Visor" class="w-full h-full object-contain">
+              </div>
+              <span class="text-[11px] sm:text-xs font-bold tracking-wider uppercase text-white block truncate">Matrix Tinted Visor</span>
+              <span class="text-[10px] sm:text-xs text-zinc-400 font-mono block mb-2">Ksh 2,200 <span class="text-[9px] text-emerald-400 font-mono block stock-label-9"></span></span>
+            </div>
+            <button onclick="quickAddFromCard(9, 'Matrix Tinted Visor', 2200, 'images/21dQ4sbELLL._SY350_.png')" class="w-full bg-white text-black text-[10px] sm:text-xs font-bold py-1.5 uppercase tracking-wider rounded hover:bg-zinc-200 transition-colors btn-stock-9">
+              Add To Cart
+            </button>
+          </div>
+
+          <div class="text-center flex flex-col justify-between">
+            <div>
+              <div onclick="openRotatableModal(9, 'Shield Mirror Glasses', 2400, 'images/OERI006C99PLA0011007-A.png')" class="w-full aspect-square rounded overflow-hidden mb-2 flex items-center justify-center p-2 cursor-pointer hover:opacity-85 transition-opacity">
+                <img src="images/OERI006C99PLA0011007-A.png" alt="Shield Mirror Glasses" class="w-full h-full object-contain">
+              </div>
+              <span class="text-[11px] sm:text-xs font-bold tracking-wider uppercase text-white block truncate">Shield Mirror Glasses</span>
+              <span class="text-[10px] sm:text-xs text-zinc-400 font-mono block mb-2">Ksh 2,400 <span class="text-[9px] text-emerald-400 font-mono block stock-label-9"></span></span>
+            </div>
+            <button onclick="quickAddFromCard(9, 'Shield Mirror Glasses', 2400, 'images/OERI006C99PLA0011007-A.png')" class="w-full bg-white text-black text-[10px] sm:text-xs font-bold py-1.5 uppercase tracking-wider rounded hover:bg-zinc-200 transition-colors btn-stock-9">
+              Add To Cart
+            </button>
+          </div>
+
+          <div class="text-center flex flex-col justify-between">
+            <div>
+              <div onclick="openRotatableModal(9, 'Futuristic Rectangular Specs', 1900, 'images/01d075d4-94d0-4686-938b-8973034240ff.png')" class="w-full aspect-square rounded overflow-hidden mb-2 flex items-center justify-center p-2 cursor-pointer hover:opacity-85 transition-opacity">
+                <img src="images/01d075d4-94d0-4686-938b-8973034240ff.png" alt="Futuristic Rectangular Specs" class="w-full h-full object-contain">
+              </div>
+              <span class="text-[11px] sm:text-xs font-bold tracking-wider uppercase text-white block truncate">Futuristic Rectangular</span>
+              <span class="text-[10px] sm:text-xs text-zinc-400 font-mono block mb-2">Ksh 1,900 <span class="text-[9px] text-emerald-400 font-mono block stock-label-9"></span></span>
+            </div>
+            <button onclick="quickAddFromCard(9, 'Futuristic Rectangular Specs', 1900, 'images/01d075d4-94d0-4686-938b-8973034240ff.png')" class="w-full bg-white text-black text-[10px] sm:text-xs font-bold py-1.5 uppercase tracking-wider rounded hover:bg-zinc-200 transition-colors btn-stock-9">
+              Add To Cart
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- User Reviews & Community Feedback Section -->
+    <section class="py-16 px-4 sm:px-6 bg-zinc-950 border-b border-zinc-900 scroll-mt-24" id="reviews-section">
+      <div class="max-w-6xl mx-auto">
+        <div class="text-center mb-12">
+          <span class="text-[10px] sm:text-xs uppercase tracking-widest text-zinc-400 font-mono">STREETWEAR COMMUNITY</span>
+          <h2 class="text-2xl sm:text-4xl font-black mt-2 text-white">VERIFIED BUYER REVIEWS</h2>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <!-- Review 1 -->
+          <div class="bg-zinc-900/60 border border-zinc-800 p-6 rounded-xl flex flex-col justify-between shadow-lg">
+            <div>
+              <div class="flex text-amber-400 space-x-1 mb-3 text-sm">
+                <i class="fa-solid fa-star"></i>
+                <i class="fa-solid fa-star"></i>
+                <i class="fa-solid fa-star"></i>
+                <i class="fa-solid fa-star"></i>
+                <i class="fa-solid fa-star"></i>
+              </div>
+              <p class="text-zinc-300 text-xs sm:text-sm leading-relaxed italic mb-4">
+                "The heavyweight hoodie and Asics rotation are insane. The quality is on par with high-end designer pieces without the crazy markup. Shipping was super fast too!"
+              </p>
+            </div>
+            <div class="flex items-center justify-between border-t border-zinc-800 pt-4">
+              <div>
+                <h5 class="text-xs font-bold text-white uppercase tracking-wider">Brian K.</h5>
+                <span class="text-[10px] text-emerald-400 font-mono">Verified Buyer</span>
+              </div>
+              <span class="text-[10px] text-zinc-500 font-mono">2 days ago</span>
+            </div>
+          </div>
+
+          <!-- Review 2 -->
+          <div class="bg-zinc-900/60 border border-zinc-800 p-6 rounded-xl flex flex-col justify-between shadow-lg">
+            <div>
+              <div class="flex text-amber-400 space-x-1 mb-3 text-sm">
+                <i class="fa-solid fa-star"></i>
+                <i class="fa-solid fa-star"></i>
+                <i class="fa-solid fa-star"></i>
+                <i class="fa-solid fa-star"></i>
+                <i class="fa-solid fa-star"></i>
+              </div>
+              <p class="text-zinc-300 text-xs sm:text-sm leading-relaxed italic mb-4">
+                "GEEPEE is literally shaping the scene right now. Picked up the BB Simon belt and an iced chain—the hardware catches every beam of light. 10/10."
+              </p>
+            </div>
+            <div class="flex items-center justify-between border-t border-zinc-800 pt-4">
+              <div>
+                <h5 class="text-xs font-bold text-white uppercase tracking-wider">Kevin M.</h5>
+                <span class="text-[10px] text-emerald-400 font-mono">Verified Buyer</span>
+              </div>
+              <span class="text-[10px] text-zinc-500 font-mono">1 week ago</span>
+            </div>
+          </div>
+
+          <!-- Review 3 -->
+          <div class="bg-zinc-900/60 border border-zinc-800 p-6 rounded-xl flex flex-col justify-between shadow-lg">
+            <div>
+              <div class="flex text-amber-400 space-x-1 mb-3 text-sm">
+                <i class="fa-solid fa-star"></i>
+                <i class="fa-solid fa-star"></i>
+                <i class="fa-solid fa-star"></i>
+                <i class="fa-solid fa-star"></i>
+                <i class="fa-solid fa-star"></i>
+              </div>
+              <p class="text-zinc-300 text-xs sm:text-sm leading-relaxed italic mb-4">
+                "The 3D view and receipt drawer checkout make shopping here so smooth. Love the cargo pants fit. Definitely ordering more drops soon!"
+              </p>
+            </div>
+            <div class="flex items-center justify-between border-t border-zinc-800 pt-4">
+              <div>
+                <h5 class="text-xs font-bold text-white uppercase tracking-wider">Sharon W.</h5>
+                <span class="text-[10px] text-emerald-400 font-mono">Verified Buyer</span>
+              </div>
+              <span class="text-[10px] text-zinc-500 font-mono">2 weeks ago</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Newsletter -->
+    <section id="contact-section" class="bg-zinc-850 py-12 px-3 sm:px-5 border-t border-zinc-800">
+      <div class="max-w-xl mx-auto text-center">
+        <h3 class="text-2xl sm:text-3xl font-black mb-3">STAY IN THE LOOP</h3>
+        <p class="text-gray-400 mb-6 text-sm sm:text-base">Sign up to get exclusive newsletter offers tailored just for you and also earn a chance to be the first to get our FREE giveaways.</p>
+        <div class="flex flex-col sm:flex-row gap-3">
+          <input type="email" id="newsletter-email" placeholder="Enter your email" class="flex-1 px-4 py-3 bg-zinc-900 border border-zinc-700 text-white placeholder-gray-400 focus:outline-none focus:border-white text-sm rounded" />
+          <button id="subscribe-btn" class="bg-white text-black px-3 py-1 font-bold hover:bg-gray-100 transition-colors text-sm rounded">SUBSCRIBE</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about-section" class="py-8 sm:py-20 px-4 sm:px-6 border-t border-stone-300 text-center relative overflow-hidden bg-[#e7e3dc]/90 text-stone-900">
+      <div class="absolute inset-0 z-0 overflow-hidden opacity-10 flex items-center justify-center pointer-events-none">
+        <img src="images/360_F_305296774_CYiMv2y87U27SoKT2o2OZFWzUzF8JPrL.png" alt="About Background" class="w-full h-full object-cover sm:object-contain object-center scale-90 sm:scale-100 max-w-sm sm:max-w-none">
+      </div>
+
+      <div class="max-w-xl mx-auto relative z-10 px-2">
+        <h3 class="text-base sm:text-2xl font-black mb-1.5 sm:mb-3 text-stone-900 tracking-wider">ABOUT GEEPEE</h3>
+        <p class="text-stone-700 text-[11px] sm:text-base leading-snug sm:leading-relaxed font-medium">
+          GEEPEE is an urban streetwear magazine and brand built for those who shape culture. We bridge high-end tailoring with uncompromising everyday grit. Every drop is limited, authentic, and crafted to stand out.
+        </p>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer style="background-color: #000; color: #fff; padding: 40px 20px; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 10px; border-top: 1px solid #222; font-family: sans-serif;">
+    
+      <!-- 1. Brand Info (On Top) -->
+      <div class="footer-left" style="display: flex; flex-direction: column; align-items: center;">
+          <h3 style="margin: 0 0 3px 0; font-size: 1.2rem; letter-spacing: 1px;">
+            <a href="GEEPEE WEB.html" class="logo">
+              <img src="images/logo geepee 2.png" alt="GEEPEE Logo" style="height: 38px; width: auto; object-fit: contain;">
+            </a>
+          </h3>
+          <p style="margin: 0; color: #888; font-size: 0.85rem;">Premium streetwear & Ultimate culture</p>
+      </div>
+
+      <!-- 2. Social Media & Contact Links (Middle) -->
+      <div class="footer-socials" style="display: flex; gap: 20px; align-items: center; justify-content: center; flex-wrap: wrap;">
+          <!-- Instagram: Official Brand Pink -->
+          <a href="#" aria-label="Instagram" style="color: #E1306C; font-size: 1.2rem; text-decoration: none; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
+              <i class="fab fa-instagram"></i>
+          </a>
+
+          <!-- TikTok: Official Dark/Light Contrast -->
+          <a href="#" aria-label="TikTok" style="color: #00F2EA; font-size: 1.2rem; text-decoration: none; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
+              <i class="fab fa-tiktok"></i>
+          </a>      
+
+          <!-- X / Twitter: Official Pure Monochrome Brand Style -->
+          <a href="https://twitter.com" target="_blank" aria-label="X (Twitter)" style="color: #ffffff; font-size: 1.2rem; text-decoration: none; display: inline-flex; align-items: center; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" style="width: 1em; height: 1em; fill: currentColor; vertical-align: middle;">
+                  <path d="M389.2 48h70.6L305.6 224.2 487 464H345L233.7 318.6 106.5 464H35.8L200.7 275.5 26.8 48H172.4L272.9 180.9 389.2 48zM364.4 421.8h39.1L151.1 88h-42L364.4 421.8z"/>
+              </svg>
+          </a>
+
+          <!-- YouTube: Official Brand Red -->
+          <a href="#" aria-label="YouTube" style="color: #FF0000; font-size: 1.2rem; text-decoration: none; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
+              <i class="fab fa-youtube"></i>
+          </a>
+
+          <!-- Email: Cream White Style -->
+          <a href="mailto:info@example.com" aria-label="Email" style="color: #FDFBF7; font-size: 1.2rem; text-decoration: none; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
+              <i class="fas fa-envelope"></i>
+          </a>
+      </div>
+
+      <!-- Divider Break -->
+      <hr style="width: 100%; border: none; border-top: 1px solid #222; margin: 4px 0;">
+
+      <!-- 3. Copyright Text (Bottom Centered) -->
+      <div class="text-gray-500 text-xs text-center" style="margin-top: 2px;">
+        &copy; 2026 GEEPEE. All rights reserved.
+      </div>
+
+    </footer>
+
+    <script>
+      // Catalog database with live inventory quantities for backend management & stock alerts
+      const products = [
+        { id: 1, name: "OVERSIZED HOODIE", price: 2500, stock: 12, image: "images/Hoodie.webp", category: "HOODIES", desc: "Heavyweight fleece engineered in the spirit of Kanye West's iconic proportions." },
+        { id: 2, name: "GRAPHIC TEE", price: 1500, stock: 5, image: "images/tee%20(1).png", category: "T-SHIRTS", desc: "A heavyweight cotton staple featuring high-definition artwork." },
+        { id: 3, name: "ORANGE T-SHIRT", price: 1600, stock: 0, image: "images/T-shirt%20Orange.png", category: "T-SHIRTS", desc: "Vibrant custom-dyed tone paying homage to high-voltage color blocking." },
+        { id: 4, name: "CARGO PANTS", price: 2500, stock: 8, image: "images/pants.jpg", category: "BOTTOMS", desc: "Utility-driven tactical design echoing Rick Owens' legendary tailoring." },
+        { id: 5, name: "BUCKET HAT", price: 800, stock: 15, image: "images/Final 1.png", category: "CAPS & HATS", desc: "Street-proven headwear essential inspired by classic 90s East Coast hip-hop." },
+        { 
+          id: 6, 
+          name: "SNEAKERS", 
+          price: 2200,
+          stock: 6, 
+          image: "images/OUAS0019-1.png", 
+          category: "SNEAKERHEADS",
+          desc: "Elite footwear rotations curated in honor of sneaker culture giants.",
+          variations: [
+            { name: "Blue gel Asics Kayano", value: "white/black", price: 2200 },
+            { name: "Pink gel Asics Kayano", value: "all colors", price: 2500 },
+            { name: "Samba Adidas", value: "single/double", price: 2000 },
+            { name: "Air Max", value: "all colors", price: 2500 },
+            { name: "Naked Wolfe", value: "classic shades", price: 3500 }
+          ]
+        },
+        { id: 7, name: "CHAIN NECKLACE", price: 1500, stock: 4, image: "images/Ice chain.png", category: "COLD CUBARN ICE", desc: "High-grade iced hardware built in the tradition of legendary diamond pendants." },
+        { id: 8, name: "BB SIMON BELT", price: 3200, stock: 2, image: "images/bbsimon.png", category: "BB SIMON BELTS", desc: "Hand-crafted crystal rhinestone leather belt." },
+        { id: 9, name: "Y2K SUNGLASSES", price: 2000, stock: 9, image: "images/01d075d4-94d0-4686-938b-8973034240ff.png", category: "Y2K SUNGLASSES", desc: "Futuristic wraparound and tinted visors built to capture millennium aesthetics." },
+        { id: 10, name: "SHORTS", price: 1800, stock: 11, image: "images/rhude%20short.png", category: "BOTTOMS", desc: "Premium architectural shorts tailored for clean proportion." },
+        { id: 11, name: "Graphic Tee", price: 1550, stock: 3, image: "images/teetee.jpg", category: "T-SHIRTS", desc: "A heavyweight custom graphic statement tee built for modern urban rotation." }
+      ];
+
+      let cart = [];
+
+      function formatMoney(amount) {
+        return amount.toLocaleString();
+      }
+
+      // Initialize stock status labels across cards
+      function updateStockUI() {
+        products.forEach(p => {
+          const labels = document.querySelectorAll(`.stock-label-${p.id}`);
+          const buttons = document.querySelectorAll(`.btn-stock-${p.id}`);
+          labels.forEach(lbl => {
+            if (p.stock <= 0) {
+              lbl.textContent = "• SOLD OUT";
+              lbl.className = "text-[9px] text-red-500 font-mono block";
+            } else if (p.stock <= 3) {
+              lbl.textContent = `• ONLY ${p.stock} LEFT`;
+              lbl.className = "text-[9px] text-amber-400 font-mono block";
+            } else {
+              lbl.textContent = `• IN STOCK (${p.stock})`;
+              lbl.className = "text-[9px] text-emerald-400 font-mono block";
+            }
+          });
+          buttons.forEach(btn => {
+            if (p.stock <= 0) {
+              btn.textContent = "SOLD OUT";
+              btn.classList.add("opacity-50", "cursor-not-allowed");
+            }
+          });
+        });
+      }
+
+      // Global Catalog Search Engine with Stock Status Popup
+      function handleGlobalSearch(query) {
+        const desktopDropdown = document.getElementById("search-results-dropdown");
+        const mobileDropdown = document.getElementById("mobile-search-results-dropdown");
+        
+        const q = query.trim().toLowerCase();
+        if (!q) {
+          desktopDropdown.classList.add("hidden");
+          mobileDropdown.classList.add("hidden");
+          return;
+        }
+
+        const matches = products.filter(p => p.name.toLowerCase().includes(q) || p.category.toLowerCase().includes(q) || p.desc.toLowerCase().includes(q));
+
+        const htmlContent = matches.length === 0 ? `
+          <div class="p-4 text-center text-xs text-zinc-500">No products or inventory found matching "${query}"</div>
+        ` : matches.map(p => `
+          <div onclick="selectSearchResult(${p.id})" class="flex items-center gap-3 p-3 hover:bg-zinc-900 cursor-pointer transition-colors">
+            <div class="w-10 h-10 bg-zinc-900 rounded overflow-hidden flex-shrink-0">
+              <img src="${p.image}" alt="${p.name}" class="w-full h-full object-contain">
+            </div>
+            <div class="flex-1 min-w-0 text-left">
+              <h5 class="text-xs font-bold text-white truncate">${p.name}</h5>
+              <p class="text-[10px] text-zinc-400 uppercase tracking-wider">${p.category} • Ksh ${formatMoney(p.price)}</p>
+            </div>
+            <div>
+              ${p.stock > 0 ? `<span class="text-[10px] bg-emerald-950 text-emerald-400 px-2 py-0.5 rounded font-mono">In Stock (${p.stock})</span>` : `<span class="text-[10px] bg-red-950 text-red-400 px-2 py-0.5 rounded font-mono">Sold Out</span>`}
+            </div>
+          </div>
+        `).join("");
+
+        desktopDropdown.innerHTML = htmlContent;
+        mobileDropdown.innerHTML = htmlContent;
+        desktopDropdown.classList.remove("hidden");
+        mobileDropdown.classList.remove("hidden");
+      }
+
+      function selectSearchResult(productId) {
+        document.getElementById("search-results-dropdown").classList.add("hidden");
+        document.getElementById("mobile-search-results-dropdown").classList.add("hidden");
+        openRotatableModal(productId);
+      }
+
+      // Profile Modal & Authentication State Handling
+      const profileBtn = document.getElementById("profile-btn");
+      const profileModal = document.getElementById("profile-modal");
+
+      profileBtn.addEventListener("click", () => {
+        checkUserSessionState();
+        profileModal.classList.remove("hidden");
+        document.body.style.overflow = "hidden";
+      });
+
+      function closeProfileModal() {
+        profileModal.classList.add("hidden");
+        document.body.style.overflow = "auto";
+      }
+
+      function checkUserSessionState() {
+        const savedUser = localStorage.getItem("geepee_current_user");
+        const authView = document.getElementById("profile-auth-view");
+        const loggedInView = document.getElementById("profile-logged-in-view");
+
+        if (savedUser) {
+          const userData = JSON.parse(savedUser);
+          document.getElementById("profile-username-display").textContent = `Welcome back, ${userData.name}!`;
+          document.getElementById("profile-email-display").textContent = userData.email;
+          authView.classList.add("hidden");
+          loggedInView.classList.remove("hidden");
+        } else {
+          authView.classList.remove("hidden");
+          loggedInView.classList.add("hidden");
+        }
+      }
+
+      function switchAuthTab(tab) {
+        const signinBtn = document.getElementById("tab-signin-btn");
+        const registerBtn = document.getElementById("tab-register-btn");
+        const signinForm = document.getElementById("form-signin");
+        const registerForm = document.getElementById("form-register");
+
+        if (tab === 'signin') {
+          signinBtn.classList.remove("text-zinc-500", "border-transparent");
+          signinBtn.classList.add("text-white", "border-white");
+          registerBtn.classList.remove("text-white", "border-white");
+          registerBtn.classList.add("text-zinc-500", "border-transparent");
+          signinForm.classList.remove("hidden");
+          registerForm.classList.add("hidden");
+        } else {
+          registerBtn.classList.remove("text-zinc-500", "border-transparent");
+          registerBtn.classList.add("text-white", "border-white");
+          signinBtn.classList.remove("text-white", "border-white");
+          signinBtn.classList.add("text-zinc-500", "border-transparent");
+          registerForm.classList.remove("hidden");
+          signinForm.classList.add("hidden");
+        }
+      }
+
+      function handleAuthSubmit(e, type) {
+        e.preventDefault();
+        let name = "Valued Customer";
+        let email = "";
+
+        if (type === 'register') {
+          name = document.getElementById("register-name").value;
+          email = document.getElementById("register-email").value;
+        } else {
+          email = document.getElementById("signin-email").value;
+          name = email.split('@')[0];
+          name = name.charAt(0).toUpperCase() + name.slice(1);
+        }
+
+        const userData = { name, email };
+        localStorage.setItem("geepee_current_user", JSON.stringify(userData));
+        
+        alert(`${type === 'register' ? 'Registration' : 'Sign in'} successful! Welcome to GEEPEE.`);
+        checkUserSessionState();
+      }
+
+      function handleLogout() {
+        localStorage.removeItem("geepee_current_user");
+        checkUserSessionState();
+      }
+
+      // Automatic Popup Newsletter Controls
+      const popupNewsletter = document.getElementById("popup-newsletter");
+
+      function checkPopupStatus() {
+        const hasSeenPopup = sessionStorage.getItem("geepee_popup_seen");
+        if (!hasSeenPopup) {
+          setTimeout(() => {
+            popupNewsletter.classList.remove("hidden");
+            document.body.style.overflow = "hidden";
+          }, 3500);
+        }
+      }
+
+      function closePopupNewsletter() {
+        popupNewsletter.classList.add("hidden");
+        document.body.style.overflow = "auto";
+        sessionStorage.setItem("geepee_popup_seen", "true");
+      }
+
+      function submitPopupNewsletter() {
+        const emailInput = document.getElementById("popup-email-input").value;
+        if (emailInput && emailInput.includes("@")) {
+          alert("Success! You're now entered for giveaways and exclusive offers.");
+          closePopupNewsletter();
+        } else {
+          alert("Please enter a valid email address.");
+        }
+      }
+
+      // Mobile Menu Dropdown Handler
+      const mobileMenuBtn = document.getElementById("mobile-menu-btn");
+      const mobileDropdown = document.getElementById("mobile-dropdown");
+
+      mobileMenuBtn.addEventListener("click", () => {
+        mobileDropdown.classList.toggle("open");
+      });
+
+      mobileDropdown.querySelectorAll("a").forEach(link => {
+        link.addEventListener("click", () => {
+          mobileDropdown.classList.remove("open");
+        });
+      });
+
+      // Cart Drawer Control
+      const cartBtn = document.getElementById("cart-btn");
+      const cartDrawer = document.getElementById("cart-drawer");
+      const cartOverlay = document.getElementById("cart-overlay");
+      const closeCartBtn = document.getElementById("close-cart-btn");
+      const floatingCheckoutBar = document.getElementById("floating-checkout-bar");
+
+      function openCartDrawer() {
+        cartDrawer.classList.add("open");
+        cartOverlay.classList.remove("hidden");
+        document.body.style.overflow = "hidden";
+        renderCartDrawer();
+      }
+
+      cartBtn.addEventListener("click", () => {
+        openCartDrawer();
+      });
+
+      function closeCart() {
+        cartDrawer.classList.remove("open");
+        cartOverlay.classList.add("hidden");
+        document.body.style.overflow = "auto";
+      }
+
+      closeCartBtn.addEventListener("click", closeCart);
+      cartOverlay.addEventListener("click", closeCart);
+
+      // 3D Fluid Rotatable Preview Modal
+      const productModal = document.getElementById("product-modal");
+
+      function openRotatableModal(productId, selectedName = null, selectedPrice = null, selectedImage = null) {
+        const product = products.find(p => p.id === productId);
+        if (!product) return;
+
+        let displayImg = selectedImage || product.image;
+        let displayName = selectedName || product.name;
+        let displayPrice = selectedPrice !== null ? selectedPrice : product.price;
+
+        const modalBody = document.getElementById("modal-body");
+        modalBody.innerHTML = `
+          <div id="rotate-container" class="perspective-stage w-full aspect-square bg-zinc-900 rounded-lg overflow-hidden mb-4 border border-zinc-800 relative flex items-center justify-center p-4 cursor-grab active:cursor-grabbing select-none">
+            <img id="rotatable-img" src="${displayImg}" alt="${displayName}" class="w-full h-full object-contain pointer-events-none transition-transform duration-75" style="transform: rotateX(0deg) rotateY(0deg) scale(1);">
+            <div class="absolute bottom-2 bg-black/70 backdrop-blur-sm px-3 py-1 rounded text-[10px] text-zinc-300 font-mono pointer-events-none tracking-wider">
+              DRAG / SWIPE FOR 3D FLUID ROTATION
+            </div>
+          </div>
+          <div class="text-left mb-4">
+            <div class="flex justify-between items-center">
+              <span class="text-[11px] text-zinc-400 uppercase tracking-widest font-bold">${product.category}</span>
+              <span class="text-xs font-mono ${product.stock > 0 ? 'text-emerald-400' : 'text-red-500'}">${product.stock > 0 ? `In Stock: ${product.stock}` : 'SOLD OUT'}</span>
+            </div>
+            <h3 class="text-xl font-black text-white mt-1">${displayName}</h3>
+            <p class="text-sm text-zinc-300 mt-2 leading-relaxed">${product.desc}</p>
+          </div>
+          <div class="flex items-center justify-between pt-4 border-t border-zinc-800">
+            <span class="text-xl font-black text-white">Ksh ${formatMoney(displayPrice)}</span>
+            <button onclick="addCustomToCart('${displayName}', ${displayPrice}, '${displayImg}', ${product.id})" class="bg-white text-black font-bold px-6 py-3 text-xs rounded hover:bg-zinc-200 transition-colors uppercase tracking-wider ${product.stock <= 0 ? 'opacity-50 cursor-not-allowed' : ''}" ${product.stock <= 0 ? 'disabled' : ''}>
+              ${product.stock > 0 ? 'ADD TO CART' : 'SOLD OUT'}
+            </button>
+          </div>
+        `;
+
+        productModal.classList.remove("hidden");
+        document.body.style.overflow = "hidden";
+
+        setup3DFluidRotation();
+      }
+
+      function setup3DFluidRotation() {
+        const container = document.getElementById("rotate-container");
+        const imgEl = document.getElementById("rotatable-img");
+        if (!container || !imgEl) return;
+
+        let isDragging = false;
+        let startX = 0;
+        let startY = 0;
+        let rotX = 0;
+        let rotY = 0;
+
+        const onStart = (clientX, clientY) => {
+          isDragging = true;
+          startX = clientX;
+          startY = clientY;
+        };
+
+        const onMove = (clientX, clientY) => {
+          if (!isDragging) return;
+          const deltaX = clientX - startX;
+          const deltaY = clientY - startY;
+
+          rotY += deltaX * 0.8;
+          rotX -= deltaY * 0.8;
+
+          rotX = Math.max(Math.min(rotX, 45), -45);
+
+          imgEl.style.transform = `rotateX(${rotX}deg) rotateY(${rotY}deg) scale(1.05)`;
+
+          startX = clientX;
+          startY = clientY;
+        };
+
+        const onEnd = () => {
+          if (!isDragging) return;
+          isDragging = false;
+          imgEl.style.transform = `rotateX(${rotX}deg) rotateY(${rotY}deg) scale(1)`;
+        };
+
+        container.addEventListener("mousedown", (e) => onStart(e.clientX, e.clientY));
+        window.addEventListener("mousemove", (e) => onMove(e.clientX, e.clientY));
+        window.addEventListener("mouseup", onEnd);
+
+        container.addEventListener("touchstart", (e) => {
+          if (e.touches && e.touches[0]) onStart(e.touches[0].clientX, e.touches[0].clientY);
+        }, { passive: true });
+
+        window.addEventListener("touchmove", (e) => {
+          if (isDragging && e.touches && e.touches[0]) {
+            onMove(e.touches[0].clientX, e.touches[0].clientY);
+          }
+        }, { passive: true });
+
+        window.addEventListener("touchend", onEnd);
+      }
+
+      function closeProductModal() {
+        productModal.classList.add("hidden");
+        document.body.style.overflow = "auto";
+      }
+
+      productModal.addEventListener("click", (e) => {
+        if (e.target === productModal) {
+          closeProductModal();
+        }
+      });
+
+      function quickAddFromCard(productId, name, price, image) {
+        const product = products.find(p => p.id === productId);
+        if (!product || product.stock <= 0) {
+          alert("Sorry, this item is currently sold out.");
+          return;
+        }
+
+        const existingItem = cart.find(item => item.name === name);
+        if (existingItem) {
+          if (existingItem.quantity >= product.stock) {
+            alert(`Cannot add more. Only ${product.stock} items left in stock.`);
+            return;
+          }
+          existingItem.quantity += 1;
+        } else {
+          cart.push({
+            id: productId,
+            name: name,
+            selectedVariation: "Standard Edition",
+            price: price,
+            image: image,
+            quantity: 1
+          });
+        }
+        updateCartCount();
+        renderCartDrawer();
+      }
+
+      function addCustomToCart(name, price, image, productId) {
+        const product = products.find(p => p.id === productId);
+        if (!product || product.stock <= 0) {
+          alert("Sorry, this item is currently sold out.");
+          return;
+        }
+
+        const existingItem = cart.find(item => item.name === name);
+        if (existingItem) {
+          if (existingItem.quantity >= product.stock) {
+            alert(`Cannot add more. Only ${product.stock} items left in stock.`);
+            return;
+          }
+          existingItem.quantity += 1;
+        } else {
+          cart.push({
+            id: productId || 6,
+            name: name,
+            selectedVariation: "Standard Edition",
+            price: price,
+            image: image,
+            quantity: 1
+          });
+        }
+        updateCartCount();
+        closeProductModal();
+        renderCartDrawer();
+      }
+
+      function updateCartCount() {
+        const totalCount = cart.reduce((sum, item) => sum + item.quantity, 0);
+        document.getElementById("cart-count").textContent = totalCount;
+        document.getElementById("drawer-item-count").textContent = `${totalCount} item${totalCount === 1 ? '' : 's'}`;
+        document.getElementById("floating-badge-count").textContent = totalCount;
+
+        if (totalCount > 0) {
+          floatingCheckoutBar.classList.remove("hidden");
+        } else {
+          floatingCheckoutBar.classList.add("hidden");
+        }
+      }
+
+      function renderCartDrawer() {
+        const container = document.getElementById("cart-items-container");
+        
+        if (cart.length === 0) {
+          container.innerHTML = `
+            <div class="text-center py-16 text-zinc-500">
+              <i class="fa-solid fa-basket-shopping text-4xl mx-auto mb-3 opacity-40"></i>
+              <p class="text-sm font-medium">Your bag is empty</p>
+            </div>
+          `;
+          document.getElementById("receipt-subtotal").textContent = "Ksh 0";
+          document.getElementById("receipt-shipping").textContent = "Ksh 0";
+          document.getElementById("receipt-total").textContent = "Ksh 0";
+          return;
+        }
+
+        container.innerHTML = cart.map((item, index) => `
+          <div class="flex items-center gap-3 pt-4 first:pt-0">
+            <div class="w-16 h-16 bg-zinc-900 rounded overflow-hidden flex-shrink-0 border border-zinc-800">
+              <img src="${item.image}" alt="${item.name}" class="w-full h-full object-cover">
+            </div>
+            <div class="flex-1 min-w-0">
+              <h4 class="text-xs font-bold truncate text-white">${item.name}</h4>
+              <p class="text-[11px] text-zinc-400 truncate">${item.selectedVariation}</p>
+              <div class="text-xs font-mono font-bold text-zinc-200 mt-1">Ksh ${formatMoney(item.price * item.quantity)}</div>
+            </div>
+            <div class="flex flex-col items-end gap-2">
+              <button onclick="removeFromCart(${index})" class="text-zinc-500 hover:text-red-400 text-xs transition-colors" title="Remove item">
+                &times;
+              </button>
+              <div class="flex items-center border border-zinc-800 rounded bg-zinc-900">
+                <button onclick="decreaseQty(${index})" class="px-2 py-0.5 text-zinc-400 hover:text-white text-xs">-</button>
+                <span class="px-2 text-xs font-mono">${item.quantity}</span>
+                <button onclick="increaseQty(${index})" class="px-2 py-0.5 text-zinc-400 hover:text-white text-xs">+</button>
+              </div>
+            </div>
+          </div>
+        `).join("");
+
+        const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+        const shippingSelect = document.getElementById("shipping-select");
+        const shippingFee = shippingSelect ? Number(shippingSelect.value) : 0;
+        const totalDue = subtotal + shippingFee;
+
+        document.getElementById("receipt-subtotal").textContent = `Ksh ${formatMoney(subtotal)}`;
+        document.getElementById("receipt-shipping").textContent = `Ksh ${formatMoney(shippingFee)}`;
+        document.getElementById("receipt-total").textContent = `Ksh ${formatMoney(totalDue)}`;
+      }
+
+      function increaseQty(index) {
+        const cartItem = cart[index];
+        const product = products.find(p => p.id === cartItem.id);
+        if (product && cartItem.quantity >= product.stock) {
+          alert(`Cannot add more. Only ${product.stock} items left in stock.`);
+          return;
+        }
+        cart[index].quantity += 1;
+        updateCartCount();
+        renderCartDrawer();
+      }
+
+      function decreaseQty(index) {
+        if (cart[index].quantity > 1) {
+          cart[index].quantity -= 1;
+        } else {
+          cart.splice(index, 1);
+        }
+        updateCartCount();
+        renderCartDrawer();
+      }
+
+      function removeFromCart(index) {
+        cart.splice(index, 1);
+        updateCartCount();
+        renderCartDrawer();
+      }
+
+      function checkout() {
+        if (cart.length === 0) return;
+        // Deduct stock upon successful checkout
+        cart.forEach(cartItem => {
+          const product = products.find(p => p.id === cartItem.id);
+          if (product) {
+            product.stock = Math.max(0, product.stock - cartItem.quantity);
+          }
+        });
+        updateStockUI();
+        alert("Proceeding to secure checkout. Inventory and calculations updated successfully!");
+        cart = [];
+        updateCartCount();
+        renderCartDrawer();
+        closeCart();
+      }
+
+      document.getElementById("subscribe-btn").addEventListener("click", () => {
+        const email = document.getElementById("newsletter-email").value;
+        if (email && email.includes("@")) {
+          alert("Thanks for subscribing!");
+          document.getElementById("newsletter-email").value = "";
+        } else {
+          alert("Please enter a valid email address.");
+        }
+      });
+
+      document.addEventListener("DOMContentLoaded", () => {
+        checkPopupStatus();
+        updateStockUI();
+      });
+    </script>
+  </body>
+</html>
