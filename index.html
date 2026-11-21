@@ -1237,24 +1237,47 @@
 
       // Global Catalog Search Engine with Stock Status Popup
 function handleGlobalSearch(query) {
-    // 1. Declare the active layout containers
     const desktopDropdown = document.getElementById("search-results-dropdown");
     const mobileDropdown = document.getElementById("mobile-search-results-dropdown");
     
-    // 2. Format the string safely
     const q = query.trim().toLowerCase();
     
-    // 3. If the search box is completely empty, hide everything and stop
     if (q === "") {
         if (desktopDropdown) desktopDropdown.classList.add("hidden");
         if (mobileDropdown) mobileDropdown.classList.add("hidden");
         return;
+    } else {
+        if (desktopDropdown) desktopDropdown.classList.remove("hidden");
+        if (mobileDropdown) mobileDropdown.classList.remove("hidden");
     }
 
-    // 4. Filter through your active products global array
-    const matches = products.filter(p => p.name.toLowerCase().includes(q) || p.category.toLowerCase().includes(q));
+    let matches = [];
 
-    // 5. Build out the dropdown display list window
+    // Loop through products to find regular matches AND sub-variation matches
+    products.forEach(p => {
+        const nameMatch = p.name.toLowerCase().includes(q);
+        const catMatch = (p.category || "").toLowerCase().includes(q);
+
+        if (nameMatch || catMatch) {
+            matches.push(p);
+        }
+
+        // Search inside the sneaker variations array!
+        if (p.variations && Array.isArray(p.variations)) {
+            p.variations.forEach(v => {
+                if (v.name.toLowerCase().includes(q)) {
+                    matches.push({
+                        id: p.id, // keeps main product reference
+                        name: v.name,
+                        price: v.price || p.price,
+                        image: p.image, // falls back to parent image
+                        category: p.category || "Sneakers"
+                    });
+                }
+            });
+        }
+    });
+
     const htmlContent = matches.length === 0 ? 
         `<div class="p-4 text-center text-xs text-zinc-500">No products or inventory found matching "${query}"</div>` :
         matches.map(p => `
@@ -1269,15 +1292,8 @@ function handleGlobalSearch(query) {
             </div>
         `).join('');
 
-    // 6. Inject the content and remove the hidden flags to reveal it
-    if (desktopDropdown) {
-        desktopDropdown.innerHTML = htmlContent;
-        desktopDropdown.classList.remove("hidden");
-    }
-    if (mobileDropdown) {
-        mobileDropdown.innerHTML = htmlContent;
-        mobileDropdown.classList.remove("hidden");
-    }
+    if (desktopDropdown) desktopDropdown.innerHTML = htmlContent;
+    if (mobileDropdown) mobileDropdown.innerHTML = htmlContent;
 }
 
 
