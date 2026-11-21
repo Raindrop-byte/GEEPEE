@@ -1236,6 +1236,7 @@
       }
 
       // Global Catalog Search Engine with Stock Status Popup
+// Global Catalog Search Engine with Stock Status Popup
 function handleGlobalSearch(query) {
     const desktopDropdown = document.getElementById("search-results-dropdown");
     const mobileDropdown = document.getElementById("mobile-search-results-dropdown");
@@ -1253,24 +1254,29 @@ function handleGlobalSearch(query) {
 
     let matches = [];
 
-    // Loop through products to find regular matches AND sub-variation matches
     products.forEach(p => {
         const nameMatch = p.name.toLowerCase().includes(q);
         const catMatch = (p.category || "").toLowerCase().includes(q);
 
         if (nameMatch || catMatch) {
-            matches.push(p);
+            matches.push({
+                id: p.id,
+                name: p.name,
+                price: p.price,
+                image: p.image, // Main parent image
+                category: p.category || "Products"
+            });
         }
 
-        // Search inside the sneaker variations array!
+        // Deep Search Inside Sneaker Variations Array
         if (p.variations && Array.isArray(p.variations)) {
             p.variations.forEach(v => {
                 if (v.name.toLowerCase().includes(q)) {
                     matches.push({
-                        id: p.id, // keeps main product reference
+                        id: p.id, // Keeps parent ID reference for click modal matching
                         name: v.name,
                         price: v.price || p.price,
-                        image: p.image, // falls back to parent image
+                        image: v.image || p.image, // FIX: Grabs specific variation image thumbnail!
                         category: p.category || "Sneakers"
                     });
                 }
@@ -1281,9 +1287,9 @@ function handleGlobalSearch(query) {
     const htmlContent = matches.length === 0 ? 
         `<div class="p-4 text-center text-xs text-zinc-500">No products or inventory found matching "${query}"</div>` :
         matches.map(p => `
-            <div onclick="selectSearchResult(${p.id})" class="flex items-center gap-3 p-3 hover:bg-zinc-800 rounded overflow-hidden flex-shrink-0 cursor-pointer">
-                <div class="w-10 h-10 bg-zinc-900 rounded overflow-hidden flex-shrink-0">
-                    <img src="${p.image}" alt="${p.name}" class="w-full h-full object-cover">
+            <div onclick="selectSearchResult(${p.id}, '${p.name.replace(/'/g, "\\'")}', ${p.price}, '${p.image}')" class="flex items-center gap-3 p-3 hover:bg-zinc-800 rounded overflow-hidden flex-shrink-0 cursor-pointer">
+                <div class="w-10 h-10 bg-zinc-900 rounded overflow-hidden flex-shrink-0 flex items-center justify-center">
+                    <img src="${p.image}" alt="${p.name}" class="w-full h-full object-contain" onerror="this.src='https://vercel.app'">
                 </div>
                 <div class="flex-1 min-w-0 text-left">
                     <h5 class="text-xs font-bold text-white uppercase tracking-wider truncate">${p.name}</h5>
@@ -1297,11 +1303,18 @@ function handleGlobalSearch(query) {
 }
 
 
+
       function selectSearchResult(productId) {
-        document.getElementById("search-results-dropdown").classList.add("hidden");
-        document.getElementById("mobile-search-results-dropdown").classList.add("hidden");
-        openRotatableModal(productId);
-      }
+    document.getElementById("search-results-dropdown").classList.add("hidden");
+    document.getElementById("mobile-search-results-dropdown").classList.add("hidden");
+    
+    // Find the product item in your master products array layout data
+    const selectedProduct = products.find(p => p.id === productId);
+    if (selectedProduct) {
+        // Pass all details dynamically to fire up your 3D canvas window
+        openRotatableModal(productId, selectedProduct.name, selectedProduct.price, selectedProduct.image);
+    }
+}
 
       // Profile Modal & Authentication State Handling
       const profileBtn = document.getElementById("profile-btn");
