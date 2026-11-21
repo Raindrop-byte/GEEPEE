@@ -1729,13 +1729,13 @@ function handleGlobalSearch(query) {
       document.getElementById("subscribe-btn").addEventListener("click", () => {
         const email = document.getElementById("newsletter-email").value;
         if (email && email.includes("@")) {
-          alert("Thanks for subscribing!");
+          alert("Thanks for subscribing to our newsletters!");
           document.getElementById("newsletter-email").value = "";
         } else {
           alert("Please enter a valid email address.");
         }
       });
-
+}
       document.addEventListener("DOMContentLoaded", () => {
         checkPopupStatus();
         updateStockUI();
