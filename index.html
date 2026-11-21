@@ -1439,7 +1439,7 @@ function handleGlobalSearch(query) {
           mobileDropdown.classList.remove("open");
         });
       }
-      
+
       // Cart Drawer Control
       const cartBtn = document.getElementById("cart-btn");
       const cartDrawer = document.getElementById("cart-drawer");
@@ -1457,7 +1457,7 @@ function handleGlobalSearch(query) {
       cartBtn.addEventListener("click", () => {
         openCartDrawer();
       });
-
+}
       function closeCart() {
         cartDrawer.classList.remove("open");
         cartOverlay.classList.add("hidden");
@@ -1470,7 +1470,7 @@ function handleGlobalSearch(query) {
       // 3D Fluid Rotatable Preview Modal
       const productModal = document.getElementById("product-modal");
 
-      function openRotatableModal(productId, selectedName = null, selectedPrice = null, selectedImage = null) {
+      window.openRotatableModal = function(productId, selectedName = null, selectedPrice = null, selectedImage = null) {
         const product = products.find(p => p.id === productId);
         if (!product) return;
 
