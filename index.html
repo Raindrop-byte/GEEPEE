@@ -1237,25 +1237,24 @@
 
       // Global Catalog Search Engine with Stock Status Popup
 function handleGlobalSearch(query) {
+    // 1. Declare the active layout containers
     const desktopDropdown = document.getElementById("search-results-dropdown");
     const mobileDropdown = document.getElementById("mobile-search-results-dropdown");
     
+    // 2. Format the string safely
     const q = query.trim().toLowerCase();
     
-    // Toggle hidden state immediately if input is empty
+    // 3. If the search box is completely empty, hide everything and stop
     if (q === "") {
-        desktopDropdown.classList.add("hidden");
-        mobileDropdown.classList.add("hidden");
+        if (desktopDropdown) desktopDropdown.classList.add("hidden");
+        if (mobileDropdown) mobileDropdown.classList.add("hidden");
         return;
-    } else {
-        desktopDropdown.classList.remove("hidden");
-        mobileDropdown.classList.remove("hidden");
     }
 
-    // Filter matching data array items
+    // 4. Filter through your active products global array
     const matches = products.filter(p => p.name.toLowerCase().includes(q) || p.category.toLowerCase().includes(q));
 
-    // Construct the results display window layout templates
+    // 5. Build out the dropdown display list window
     const htmlContent = matches.length === 0 ? 
         `<div class="p-4 text-center text-xs text-zinc-500">No products or inventory found matching "${query}"</div>` :
         matches.map(p => `
@@ -1268,11 +1267,17 @@ function handleGlobalSearch(query) {
                     <p class="text-[10px] text-zinc-400 uppercase tracking-wider">${p.category} • Ksh ${p.price.toLocaleString()}</p>
                 </div>
             </div>
-        `).join("");
+        `).join('');
 
-    // Inject data content onto active window views
-    desktopDropdown.innerHTML = htmlContent;
-    mobileDropdown.innerHTML = htmlContent;
+    // 6. Inject the content and remove the hidden flags to reveal it
+    if (desktopDropdown) {
+        desktopDropdown.innerHTML = htmlContent;
+        desktopDropdown.classList.remove("hidden");
+    }
+    if (mobileDropdown) {
+        mobileDropdown.innerHTML = htmlContent;
+        mobileDropdown.classList.remove("hidden");
+    }
 }
 
 
